@@ -1,0 +1,34 @@
+// Prisma schema — defines your database tables.
+// After editing this file, run: npm run db:migrate
+// To explore the database visually, run: npm run db:studio
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  language  String   @default("en")
+  createdAt DateTime @default(now())
+
+  todos     Todo[]
+}
+
+model Todo {
+  id        String   @id @default(cuid())
+  title     String
+  done      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

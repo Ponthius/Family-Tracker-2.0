@@ -1,0 +1,18 @@
+{
+  "app_name": "Todo App",
+  "login": "Log in",
+  "logout": "Log out",
+  "register": "Create account",
+  "email": "Email address",
+  "password": "Password",
+  "name": "Full name",
+  "add_todo": "Add todo",
+  "todo_placeholder": "What needs to be done?",
+  "no_todos": "No todos yet. Add one above!",
+  "delete": "Delete",
+  "mark_done": "Mark as done",
+  "mark_undone": "Mark as not done",
+  "greeting": "Hello, {{name}}",
+  "error_empty_title": "Please enter a todo title.",
+  "loading": "Loading…"
+}
