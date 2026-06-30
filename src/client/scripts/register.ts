@@ -18,8 +18,11 @@ form.addEventListener("submit", async (e) => {
   const password = (document.getElementById("password") as HTMLInputElement).value;
 
   try {
-    await api.post("/api/auth/register", { name, email, password });
-    location.replace("/pages/todos.html");
+    const response = await api.post("/api/auth/register", { name, email, password });
+    if (response.user) {
+      localStorage.setItem('user', JSON.stringify(response.user));
+    }
+    location.replace("/pages/dashboard.html");
   } catch (err) {
     errorBox.textContent = err instanceof Error ? err.message : t("error_empty_title");
   }

@@ -15,6 +15,6 @@ export function redirectIfGuest(): void {
 export function redirectIfLoggedIn(): void {
   // Call /api/auth/me; if it succeeds, the user is already logged in.
   fetch("/api/auth/me", { credentials: "include" }).then((res) => {
-    if (res.ok) location.replace("/pages/todos.html");
+    if (res.ok) location.replace("/pages/dashboard.html");
   });
 }
