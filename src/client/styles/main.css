@@ -1,3 +1,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Dashboard Custom Styles */
+@layer components {
+  /* Mobile sidebar open state */
+  #mobileSidebar.open {
+    left: 0;
+  }
+  
+  /* Mobile overlay active state */
+  #mobileSidebarOverlay.active {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Table row styles */
+  tbody tr td {
+    @apply px-5 py-3.5 border-b border-[#efe4dc] text-[#3a302a] text-[0.9rem];
+  }
+  
+  tbody tr:last-child td {
+    @apply border-b-0;
+  }
+  
+  /* Badge style for table cells */
+  .badge {
+    @apply bg-[#e8e0d8] px-3 py-1 rounded-full text-[0.7rem] font-semibold text-[#5e4c3e] inline-block;
+  }
+  
+  /* Notification container variants */
+  #notification-container.notif-success {
+    @apply bg-green-600;
+  }
+  
+  #notification-container.notif-error {
+    @apply bg-red-600;
+  }
+  
+  #notification-container.notif-warning {
+    @apply bg-yellow-400 text-gray-800;
+  }
+  
+  #notification-container.notif-info {
+    @apply bg-cyan-600;
+  }
+  
+  /* Show notification */
+  #notification-container.show {
+    @apply opacity-100 pointer-events-auto;
+  }
+}
