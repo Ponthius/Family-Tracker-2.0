@@ -770,6 +770,10 @@ tbody tr:last-child td {
   margin-right: auto;
 }
 
+.-mt-1 {
+  margin-top: -0.25rem;
+}
+
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -780,6 +784,10 @@ tbody tr:last-child td {
 
 .mb-2 {
   margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
 }
 
 .mb-4 {
@@ -796,6 +804,18 @@ tbody tr:last-child td {
 
 .mt-4 {
   margin-top: 1rem;
+}
+
+.mt-5 {
+  margin-top: 1.25rem;
+}
+
+.mt-\[10px\] {
+  margin-top: 10px;
+}
+
+.mt-\[6px\] {
+  margin-top: 6px;
 }
 
 .mt-auto {
@@ -872,6 +892,10 @@ tbody tr:last-child td {
 
 .min-w-\[18px\] {
   min-width: 18px;
+}
+
+.max-w-\[360px\] {
+  max-width: 360px;
 }
 
 .max-w-sm {
@@ -955,6 +979,10 @@ tbody tr:last-child td {
   gap: 2rem;
 }
 
+.gap-\[6px\] {
+  gap: 6px;
+}
+
 .space-y-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
@@ -1035,6 +1063,11 @@ tbody tr:last-child td {
   border-top-width: 1px;
 }
 
+.border-\[\#c8bfb5\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(200 191 181 / var(--tw-border-opacity, 1));
+}
+
 .border-\[\#dcdcdc\] {
   --tw-border-opacity: 1;
   border-color: rgb(220 220 220 / var(--tw-border-opacity, 1));
@@ -1103,6 +1136,11 @@ tbody tr:last-child td {
 .bg-\[\#faf3ec\] {
   --tw-bg-opacity: 1;
   background-color: rgb(250 243 236 / var(--tw-bg-opacity, 1));
+}
+
+.bg-\[\#faf8f5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 248 245 / var(--tw-bg-opacity, 1));
 }
 
 .bg-\[\#fdfaf7\] {
@@ -1206,6 +1244,11 @@ tbody tr:last-child td {
   padding-right: 1.5rem;
 }
 
+.px-7 {
+  padding-left: 1.75rem;
+  padding-right: 1.75rem;
+}
+
 .py-0\.5 {
   padding-top: 0.125rem;
   padding-bottom: 0.125rem;
@@ -1266,6 +1309,16 @@ tbody tr:last-child td {
   padding-bottom: 2rem;
 }
 
+.py-\[11px\] {
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
+.py-\[9px\] {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
 .pb-20 {
   padding-bottom: 5rem;
 }
@@ -1308,6 +1361,10 @@ tbody tr:last-child td {
   font-size: 0.65rem;
 }
 
+.text-\[0\.82rem\] {
+  font-size: 0.82rem;
+}
+
 .text-\[0\.85rem\] {
   font-size: 0.85rem;
 }
@@ -1316,8 +1373,20 @@ tbody tr:last-child td {
   font-size: 0.8rem;
 }
 
+.text-\[0\.95rem\] {
+  font-size: 0.95rem;
+}
+
+.text-\[0\.9rem\] {
+  font-size: 0.9rem;
+}
+
 .text-\[1\.3rem\] {
   font-size: 1.3rem;
+}
+
+.text-\[1\.4rem\] {
+  font-size: 1.4rem;
 }
 
 .text-\[1\.7rem\] {
@@ -1419,6 +1488,11 @@ tbody tr:last-child td {
   color: rgb(95 79 66 / var(--tw-text-opacity, 1));
 }
 
+.text-\[\#7a6e66\] {
+  --tw-text-opacity: 1;
+  color: rgb(122 110 102 / var(--tw-text-opacity, 1));
+}
+
 .text-\[\#7b6b5f\] {
   --tw-text-opacity: 1;
   color: rgb(123 107 95 / var(--tw-text-opacity, 1));
@@ -1437,6 +1511,11 @@ tbody tr:last-child td {
 .text-\[\#9b8a7a\] {
   --tw-text-opacity: 1;
   color: rgb(155 138 122 / var(--tw-text-opacity, 1));
+}
+
+.text-\[\#a13d3d\] {
+  --tw-text-opacity: 1;
+  color: rgb(161 61 61 / var(--tw-text-opacity, 1));
 }
 
 .text-\[\#cbbcaa\] {
@@ -1522,6 +1601,12 @@ tbody tr:last-child td {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.shadow-\[0_2px_12px_rgba\(0\2c 0\2c 0\2c 0\.08\)\] {
+  --tw-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  --tw-shadow-colored: 0 2px 12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
 .shadow-\[0_2px_8px_rgba\(0\2c 0\2c 0\2c 0\.03\)\] {
   --tw-shadow: 0 2px 8px rgba(0,0,0,0.03);
   --tw-shadow-colored: 0 2px 8px var(--tw-shadow-color);
@@ -1562,6 +1647,11 @@ tbody tr:last-child td {
   --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 .backdrop-blur-sm {
@@ -1618,6 +1708,11 @@ tbody tr:last-child td {
   border-color: rgb(207 195 184 / var(--tw-border-opacity, 1));
 }
 
+.hover\:bg-\[\#2c2420\]:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(44 36 32 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:bg-\[\#e8e0d8\]:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(232 224 216 / var(--tw-bg-opacity, 1));
@@ -1666,6 +1761,11 @@ tbody tr:last-child td {
   --tw-shadow: 0 12px 20px -12px rgba(0,0,0,0.1);
   --tw-shadow-colored: 0 12px 20px -12px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.focus\:border-\[\#8b7355\]:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(139 115 85 / var(--tw-border-opacity, 1));
 }
 
 .focus\:outline-none:focus {
