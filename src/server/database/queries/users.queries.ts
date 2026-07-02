@@ -1,9 +1,11 @@
 import { prisma } from "../client.js";
 
 export type CreateUserInput = {
-  name: string;
+  username: string;
   email: string;
   password: string;
+  role?: string;
+  familyId?: string;
 };
 
 export function findUserByEmail(email: string) {
@@ -11,7 +13,14 @@ export function findUserByEmail(email: string) {
 }
 
 export function findUserById(id: string) {
-  return prisma.user.findUnique({ where: { id } });
+  return prisma.user.findUnique({ 
+    where: { id },
+    include: { family: true }
+  });
+}
+
+export function findUserByUsername(username: string) {
+  return prisma.user.findUnique({ where: { username } });
 }
 
 export function createUser(data: CreateUserInput) {
