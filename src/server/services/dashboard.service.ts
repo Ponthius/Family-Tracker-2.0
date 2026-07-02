@@ -1,4 +1,4 @@
-import { db } from "../database/client.js";
+import { prisma as db } from "../database/client.js";
 
 export async function getDashboardStats(userId: string) {
   const [totalTasks, completedTasks, pendingTasks] = await Promise.all([

@@ -49,8 +49,12 @@ export async function registerUser(username: string, email: string, password: st
   return user;
 }
 
-export async function loginUser(email: string, password: string) {
-  const user = await findUserByEmail(email);
+export async function loginUser(identifier: string, password: string) {
+  // Try email first, then username
+  let user = await findUserByEmail(identifier);
+  if (!user) {
+    user = await findUserByUsername(identifier);
+  }
   if (!user) {
     throw new AppError(401, "Invalid email or password.");
   }

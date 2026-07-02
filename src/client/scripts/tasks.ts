@@ -2,8 +2,7 @@
 //  Family Tracker — Tasks Page Logic
 //  tasks.ts
 //
-//  Compile to tasks.js before use:
-//    tsc tasks.ts --target ES6 --lib ES6,DOM
+//  Compiled automatically by esbuild (scripts/build-client.mjs)
 // ─────────────────────────────────────────────
 
 // ── Types ──────────────────────────────────────────────────────────────────

@@ -28,8 +28,9 @@ export async function register(req: Request, res: Response, next: NextFunction) 
 
 export async function login(req: Request, res: Response, next: NextFunction) {
   try {
-    const { email, password } = req.body as { email: string; password: string };
-    const user = await loginUser(email, password);
+    const { username, email, password } = req.body as { username?: string; email?: string; password: string };
+    const identifier = email ?? username ?? "";
+    const user = await loginUser(identifier, password);
     req.session.userId = user.id;
     res.json({ 
       user: { 
