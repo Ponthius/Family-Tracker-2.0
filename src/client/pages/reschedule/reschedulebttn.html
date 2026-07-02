@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reschedule Event</title>
+
+    <!-- Tailwind (Development Only) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="min-h-screen bg-[#e8e2d9] font-sans">
+
+    <!-- Example Reschedule Button -->
+    <button
+        class="rescheduleButton mt-5 ml-5 rounded-md bg-[#3d3530] px-4 py-2 text-white transition hover:bg-[#2c2420]"
+        data-task-id="1">
+
+        Reschedule
+
+    </button>
+
+    <!-- Modal -->
+    <div
+        id="rescheduleModal"
+        class="fixed inset-0 hidden items-center justify-center bg-black/50">
+
+        <div
+            class="w-full max-w-md rounded-xl bg-[#f5f1ec] p-8 shadow-lg">
+
+            <h2
+                class="mb-6 text-center font-serif text-2xl font-bold text-[#2c2420]">
+
+                Reschedule Event
+
+            </h2>
+
+            <label
+                for="newDate"
+                class="mb-2 block text-sm text-[#5a4e46]">
+
+                New Date
+
+            </label>
+
+            <input
+                id="newDate"
+                type="date"
+                class="mb-5 w-full rounded border border-[#c8bfb5] bg-[#faf8f5] p-3">
+
+            <label
+                for="newTime"
+                class="mb-2 block text-sm text-[#5a4e46]">
+
+                New Time
+
+            </label>
+
+            <input
+                id="newTime"
+                type="time"
+                class="w-full rounded border border-[#c8bfb5] bg-[#faf8f5] p-3">
+
+            <div class="mt-8 flex gap-4">
+
+                <button
+                    id="cancelReschedule"
+                    class="flex-1 rounded bg-[#c8bfb5] py-3 transition hover:bg-[#b8aea2]">
+
+                    Cancel
+
+                </button>
+
+                <button
+                    id="saveReschedule"
+                    class="flex-1 rounded bg-[#3d3530] py-3 text-white transition hover:bg-[#2c2420]">
+
+                    Save
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="dist/reschedulefeat.js"></script>
+
+</body>
+</html>
