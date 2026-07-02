@@ -1,21 +1,13 @@
-// ─────────────────────────────────────────────
-//  Family Tracker — Login Page Logic
-//  login.ts
-// ─────────────────────────────────────────────
+import { loadLanguage, t } from "../lib/i18n.js";
+import { api } from "../lib/api.js";
+import { redirectIfLoggedIn } from "../lib/session.js";
 
-interface LoginPayload {
-  username: string;
-  password: string;
-}
+redirectIfLoggedIn();
 
-interface LoginErrorResponse {
-  error?: string;
-}
+await loadLanguage();
 
-const form = document.getElementById("loginForm") as HTMLFormElement;
-const usernameInput = document.getElementById("username") as HTMLInputElement;
-const passwordInput = document.getElementById("password") as HTMLInputElement;
-const errorMsg = document.getElementById("errorMsg") as HTMLParagraphElement;
+const form = document.getElementById("login-form") as HTMLFormElement;
+const errorBox = document.getElementById("error-message") as HTMLParagraphElement;
 
 function showError(message: string): void {
   errorMsg.textContent = message;
@@ -42,20 +34,12 @@ form.addEventListener("submit", async (e: SubmitEvent) => {
   }
 
   try {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) {
-      const data: LoginErrorResponse = await res.json().catch(() => ({}));
-      showError(data.error || "Invalid username or password.");
-      return;
+    const response = await api.post("/api/auth/login", { email, password });
+    if (response.user) {
+      localStorage.setItem('user', JSON.stringify(response.user));
     }
-
-    window.location.href = "/dashboard";
-  } catch {
-    showError("Unable to reach the server. Please try again.");
+    location.replace("/pages/dashboard.html");
+  } catch (err) {
+    errorBox.textContent = err instanceof Error ? err.message : t("error_empty_title");
   }
 });

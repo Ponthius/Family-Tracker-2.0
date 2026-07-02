@@ -1,4 +1,36 @@
+import { syncPendingActions } from "../../services/sync.services.ts";
+
 const API = '/api';
+
+let isOnline = navigator.onLine;
+
+async function handleOnline() {
+  isOnline = true;
+  showNotification('Internet connection restored', 'success');
+  const result = await syncPendingActions();
+  if (result.synced > 0) {
+    showNotification(`Synced ${result.synced} pending action(s).`, 'success');
+  } else if (result.remaining > 0) {
+    showNotification('Some pending actions remain queued.', 'info');
+  }
+}
+
+window.addEventListener('online', handleOnline);
+
+window.addEventListener('offline', () => {
+  isOnline = false;
+  showNotification('You are offline. Some features may not work.');
+});
+
+if (navigator.onLine) {
+  showNotification('Syncing pending actions...', 'info');
+  const result = await syncPendingActions();
+  if (result.synced > 0) {
+    showNotification(`Synced ${result.synced} pending action(s).`, 'success');
+  } else if (result.remaining > 0) {
+    showNotification('Some pending actions remain queued.', 'info');
+  }
+}
 
 function getStoredUser() {
   try {
