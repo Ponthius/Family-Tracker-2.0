@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasks - Family Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-[#e8e2d9] font-sans text-[#2c2420] px-4 py-6 pb-16">
+
+  <div class="max-w-[920px] mx-auto flex flex-col gap-6">
+
+    <!-- Topbar -->
+    <div class="text-center">
+      <h1 class="font-serif text-[1.6rem] font-bold text-[#2c2420]">Family Tracker</h1>
+      <p class="text-[0.9rem] text-[#7a6e66] mt-1">Tasks</p>
+    </div>
+
+    <!-- Panel -->
+    <div class="bg-[#f5f1ec] rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-6">
+
+      <!-- Toolbar -->
+      <div class="flex flex-wrap gap-3 mb-5">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by task, user, or description..."
+          class="flex-1 min-w-[200px] px-3 py-[9px] border border-[#c8bfb5] rounded-md
+                 bg-[#faf8f5] text-[0.9rem] text-[#2c2420] outline-none
+                 focus:border-[#8b7355] transition-colors"
+        >
+        <button
+          id="createTaskBtn"
+          class="px-[18px] py-[11px] bg-[#3d3530] text-[#f5f1ec] text-[0.9rem]
+                 tracking-wide rounded-md cursor-pointer hover:bg-[#2c2420]
+                 transition-colors whitespace-nowrap"
+        >
+          + Create Task
+        </button>
+      </div>
+
+      <!-- Success confirmation -->
+      <div
+        id="confirmation"
+        class="hidden mb-4 px-4 py-[10px] bg-[#e7efe2] border border-[#b9cdb0]
+               text-[#3c5a3c] text-[0.85rem] rounded-md"
+      >
+        Task created successfully.
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-[0.88rem]">
+          <thead>
+            <tr>
+              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap">Role</th>
+              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap">Username</th>
+              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap">Task</th>
+              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap">Description</th>
+              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap">Date/Time</th>
+            </tr>
+          </thead>
+          <tbody id="taskTableBody">
+            <!-- rows injected by TS -->
+          </tbody>
+        </table>
+        <p id="noResults" class="hidden text-center text-[#7a6e66] text-[0.9rem] py-6">
+          No tasks found.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Task Modal Overlay -->
+  <div
+    id="modalOverlay"
+    class="hidden fixed inset-0 bg-[rgba(44,36,32,0.45)] flex items-center
+           justify-center p-5 z-50"
+  >
+    <div class="bg-[#f5f1ec] rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.18)]
+                w-full max-w-[420px] max-h-[90vh] overflow-y-auto
+                flex flex-col gap-[6px] p-7">
+
+      <h2 class="font-serif text-[1.25rem] font-bold text-[#2c2420] mb-3">Create Task</h2>
+
+      <!-- Assign User -->
+      <label for="assignRole" class="text-[0.82rem] text-[#5a4e46] mt-[10px]">User to Assign</label>
+      <select
+        id="assignRole"
+        class="w-full px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5]
+               text-[0.9rem] text-[#2c2420] outline-none focus:border-[#8b7355]
+               transition-colors"
+      >
+        <option value="">Select user</option>
+        <option value="father|Dad">Father — Dad</option>
+        <option value="mother|Mom">Mother — Mom</option>
+        <option value="child|Alex">Child — Alex</option>
+        <option value="child|Sam">Child — Sam</option>
+      </select>
+      <p id="errAssign" class="hidden text-[#a13d3d] text-[0.76rem] mt-1">Please select a user.</p>
+
+      <!-- Task Name -->
+      <label for="taskName" class="text-[0.82rem] text-[#5a4e46] mt-[10px]">Task Name</label>
+      <input
+        type="text"
+        id="taskName"
+        placeholder="e.g., Take out the trash"
+        class="w-full px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5]
+               text-[0.9rem] text-[#2c2420] outline-none focus:border-[#8b7355]
+               transition-colors"
+      >
+      <p id="errName" class="hidden text-[#a13d3d] text-[0.76rem] mt-1">Task name is required.</p>
+
+      <!-- Description -->
+      <label for="taskDesc" class="text-[0.82rem] text-[#5a4e46] mt-[10px]">Task Description</label>
+      <textarea
+        id="taskDesc"
+        rows="3"
+        placeholder="Optional details..."
+        class="w-full px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5]
+               text-[0.9rem] text-[#2c2420] outline-none focus:border-[#8b7355]
+               transition-colors resize-y font-sans"
+      ></textarea>
+
+      <!-- Date & Time -->
+      <div class="flex gap-3 mt-[10px]">
+        <div class="flex flex-col flex-1">
+          <label for="taskDate" class="text-[0.82rem] text-[#5a4e46] mb-1">Date</label>
+          <input
+            type="date"
+            id="taskDate"
+            class="w-full px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5]
+                   text-[0.9rem] text-[#2c2420] outline-none focus:border-[#8b7355]
+                   transition-colors"
+          >
+          <p id="errDate" class="hidden text-[#a13d3d] text-[0.76rem] mt-1">Valid future date required.</p>
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="taskTime" class="text-[0.82rem] text-[#5a4e46] mb-1">Time</label>
+          <input
+            type="time"
+            id="taskTime"
+            class="w-full px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5]
+                   text-[0.9rem] text-[#2c2420] outline-none focus:border-[#8b7355]
+                   transition-colors"
+          >
+          <p id="errTime" class="hidden text-[#a13d3d] text-[0.76rem] mt-1">Valid time required.</p>
+        </div>
+      </div>
+
+      <!-- Modal Actions -->
+      <div class="flex justify-end gap-[10px] mt-6">
+        <button
+          id="cancelBtn"
+          class="px-[18px] py-[11px] bg-transparent text-[#5a4e46] border border-[#c8bfb5]
+                 rounded-md text-[0.9rem] cursor-pointer hover:bg-[#ece6dd] transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          id="saveTaskBtn"
+          class="px-[18px] py-[11px] bg-[#3d3530] text-[#f5f1ec] rounded-md
+                 text-[0.9rem] tracking-wide cursor-pointer hover:bg-[#2c2420]
+                 transition-colors"
+        >
+          Save Task
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="tasks.ts"></script>
+</body>
+</html>
