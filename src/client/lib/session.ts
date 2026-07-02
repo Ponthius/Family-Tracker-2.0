@@ -3,18 +3,48 @@
  * The server is the source of truth — these helpers just handle page redirects.
  */
 
+type CachedUser = { id: string; name: string; email: string };
+
+export function getCachedUser(): CachedUser | null {
+  const stored = localStorage.getItem("user");
+  if (!stored) return null;
+  try {
+    return JSON.parse(stored) as CachedUser;
+  } catch {
+    return null;
+  }
+}
+
 export function redirectIfGuest(): void {
-  // If an API call returns 401, the user is not logged in — send them to login.
-  window.addEventListener("unhandledrejection", (e) => {
-    if (e.reason instanceof Error && e.reason.message.includes("logged in")) {
-      location.replace("/pages/login.html");
-    }
-  });
+  if (navigator.onLine) {
+    fetch("/api/auth/me", { credentials: "include" })
+      .then((res) => {
+        if (!res.ok) location.replace("/pages/login.html");
+      })
+      .catch(() => {
+        if (!getCachedUser()) location.replace("/pages/login.html");
+      });
+    return;
+  }
+
+  if (!getCachedUser()) {
+    location.replace("/pages/login.html");
+  }
 }
 
 export function redirectIfLoggedIn(): void {
-  // Call /api/auth/me; if it succeeds, the user is already logged in.
-  fetch("/api/auth/me", { credentials: "include" }).then((res) => {
-    if (res.ok) location.replace("/pages/dashboard.html");
-  });
+  if (navigator.onLine) {
+    fetch("/api/auth/me", { credentials: "include" })
+      .then((res) => {
+        if (res.ok) location.replace("/pages/dashboard.html");
+      })
+      .catch(() => {
+        if (getCachedUser()) location.replace("/pages/dashboard.html");
+      });
+    return;
+  }
+
+  if (getCachedUser()) {
+    location.replace("/pages/dashboard.html");
+  }
 }
