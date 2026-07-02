@@ -11,13 +11,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Family {
   id        String   @id @default(cuid())
   name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members   User[]
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
   email     String   @unique
   password  String
+  role      String   @default("Member")  // "Admin" or "Member"
   language  String   @default("en")
   createdAt DateTime @default(now())
+
+  familyId  String?
+  family    Family?  @relation(fields: [familyId], references: [id], onDelete: SetNull)
 
   todos     Todo[]
 }
