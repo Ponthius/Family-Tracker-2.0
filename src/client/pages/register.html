@@ -1,81 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register - Family Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body class="min-h-screen flex items-center justify-center bg-[#e8e2d9] p-5 font-sans">
 
-  <div class="w-full max-w-[360px] bg-[#f5f1ec] rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-8 px-7 flex flex-col gap-[6px]">
+  <div class="w-full max-w-[400px] bg-[#f5f1ec] rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-8 px-7 flex flex-col gap-[6px]">
 
-    <h1 class="font-serif text-center text-[#2c2420] text-[1.4rem] font-bold mb-3">
-      Family Tracker
+    <h1 class="font-serif text-center text-[#2c2420] text-[1.4rem] font-bold mb-2">
+      Create Family Account
     </h1>
 
     <p id="errorMsg" class="hidden text-[#a13d3d] text-[0.8rem] text-center -mt-1 mb-1"></p>
 
-    <form id="registerForm" class="flex flex-col gap-[6px]">
-      <label for="username" class="text-[0.82rem] text-[#5a4e46] mt-[10px]">Username</label>
+    <form id="registerForm" class="flex flex-col gap-[6px]" novalidate>
+
+      <label for="username" class="text-[0.82rem] text-[#5a4e46] mt-[8px]">Username</label>
       <input
-        type="text"
-        id="username"
-        name="username"
-        placeholder="Your username"
-        required
+        id="username" type="text" required autocomplete="username"
+        placeholder="Choose a username"
         class="w-full px-3 py-[9px] rounded-md border border-[#c8bfb5] bg-[#faf8f5]
                text-[0.9rem] text-[#2c2420] outline-none
                focus:border-[#8b7355] transition-colors"
       >
 
-      <label for="email" class="text-[0.82rem] text-[#5a4e46] mt-[10px]">Email Address</label>
+      <label for="email" class="text-[0.82rem] text-[#5a4e46] mt-[8px]">Email address</label>
       <input
-        type="email"
-        id="email"
-        name="email"
-        placeholder="user@gmail.com"
-        required
-        autocomplete="email"
+        id="email" type="email" required autocomplete="email"
+        placeholder="your@email.com"
         class="w-full px-3 py-[9px] rounded-md border border-[#c8bfb5] bg-[#faf8f5]
                text-[0.9rem] text-[#2c2420] outline-none
                focus:border-[#8b7355] transition-colors"
       >
 
-      <label for="password" class="text-[0.82rem] text-[#5a4e46] mt-[10px]">Password</label>
+      <label for="familyName" class="text-[0.82rem] text-[#5a4e46] mt-[8px]">Family name</label>
       <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Enter password"
-        required
-        autocomplete="new-password"
+        id="familyName" type="text" required
+        placeholder="e.g. The Smiths"
         class="w-full px-3 py-[9px] rounded-md border border-[#c8bfb5] bg-[#faf8f5]
                text-[0.9rem] text-[#2c2420] outline-none
                focus:border-[#8b7355] transition-colors"
       >
 
-      <label for="confirmPassword" class="text-[0.82rem] text-[#5a4e46] mt-[10px]">Confirm Password</label>
+      <label for="password" class="text-[0.82rem] text-[#5a4e46] mt-[8px]">Password</label>
       <input
-        type="password"
-        id="confirmPassword"
-        name="confirmPassword"
-        placeholder="Confirm password"
-        required
-        autocomplete="new-password"
+        id="password" type="password" required autocomplete="new-password"
+        placeholder="At least 6 characters"
         class="w-full px-3 py-[9px] rounded-md border border-[#c8bfb5] bg-[#faf8f5]
                text-[0.9rem] text-[#2c2420] outline-none
                focus:border-[#8b7355] transition-colors"
       >
 
-      <label for="familyName" class="text-[0.82rem] text-[#5a4e46] mt-[10px]">Family Name</label>
+      <label for="confirmPassword" class="text-[0.82rem] text-[#5a4e46] mt-[8px]">Confirm password</label>
       <input
-        type="text"
-        id="familyName"
-        name="familyName"
-        placeholder="Your family name"
-        required
+        id="confirmPassword" type="password" required autocomplete="new-password"
+        placeholder="Repeat your password"
         class="w-full px-3 py-[9px] rounded-md border border-[#c8bfb5] bg-[#faf8f5]
                text-[0.9rem] text-[#2c2420] outline-none
                focus:border-[#8b7355] transition-colors"
@@ -83,16 +65,17 @@
 
       <button
         type="submit"
-        class="mt-5 py-[11px] bg-[#3d3530] text-[#f5f1ec] border-none rounded-md
-               text-[0.95rem] cursor-pointer tracking-[0.03em] transition-colors
-               hover:bg-[#2c2420]"
+        class="mt-5 py-[11px] rounded-md bg-[#3d3530] text-[#f5f1ec]
+               text-[0.95rem] tracking-wide cursor-pointer
+               hover:bg-[#2c2420] transition-colors"
       >
-        Register
+        Create account
       </button>
     </form>
 
     <p class="text-center text-[0.8rem] text-[#7a6e66] mt-[6px]">
-      Already have an account? <a href="/pages/login.html" class="text-[#5a4038] no-underline hover:underline">Log in</a>
+      Already have an account?
+      <a href="/pages/login.html" class="text-[#5a4038] hover:underline">Log in</a>
     </p>
 
   </div>
