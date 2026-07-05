@@ -7,11 +7,6 @@ export async function getDashboardStats(userId: string) {
     db.todo.count({ where: { userId, done: false } }),
   ]);
 
-  const user = await db.user.findUnique({
-    where: { id: userId },
-    select: { name: true },
-  });
-
   return {
     tasks: totalTasks,
     members: 1,
@@ -49,9 +44,6 @@ export async function getUpcomingTasks(userId: string) {
       id: true,
       title: true,
       createdAt: true,
-      user: {
-        select: { name: true },
-      },
     },
   });
 
@@ -59,6 +51,6 @@ export async function getUpcomingTasks(userId: string) {
     EventName: task.title,
     TaskDate: task.createdAt.toISOString().split("T")[0],
     TaskTime: task.createdAt.toISOString().split("T")[1].substring(0, 5),
-    Username: task.user.name,
+    Username: "Member",
   }));
 }

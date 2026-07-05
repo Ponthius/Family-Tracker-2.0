@@ -34,3 +34,27 @@ export function getFamilyMembers(familyId: string) {
     }
   });
 }
+
+export function updateFamilyById(id: string, data: Parameters<typeof prisma.family.update>[0]["data"]) {
+  return prisma.family.update({ where: { id }, data });
+}
+
+export function markFamilyDeleted(id: string, deletedAt: Date, purgeAt: Date) {
+  return prisma.family.update({
+    where: { id },
+    data: { deletedAt, purgeAt },
+  });
+}
+
+export function deleteFamilyById(id: string) {
+  return prisma.family.delete({ where: { id } });
+}
+
+export function listExpiredDeletedFamilies(now: Date) {
+  return prisma.family.findMany({
+    where: {
+      deletedAt: { not: null },
+      purgeAt: { lte: now },
+    },
+  });
+}

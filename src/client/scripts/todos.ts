@@ -4,7 +4,7 @@ import { redirectIfGuest, getCachedUser } from "../lib/session.js";
 import { TodoItem, type Todo } from "../components/TodoItem.js";
 import { Navbar } from "../components/Navbar.js";
 import { Modal } from "../components/Modal.js";
-import { addPendingAction } from "../../services/sync.services.ts";
+import { addPendingAction } from "../../services/sync.services.js";
 
 redirectIfGuest();
 

@@ -1,4 +1,4 @@
-import { syncPendingActions } from "../../services/sync.services.ts";
+import { syncPendingActions } from "../../services/sync.services.js";
 
 const API = '/api';
 

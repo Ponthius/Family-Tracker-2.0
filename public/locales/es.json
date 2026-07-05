@@ -1,0 +1,19 @@
+{
+  "app_name": "Family Tracker",
+  "login": "Iniciar sesión",
+  "logout": "Cerrar sesión",
+  "register": "Crear cuenta",
+  "email": "Correo electrónico",
+  "password": "Contraseña",
+  "name": "Nombre completo",
+  "add_todo": "Agregar tarea",
+  "todo_placeholder": "¿Qué hay que hacer?",
+  "no_todos": "Aún no hay tareas. ¡Agrega una arriba!",
+  "delete": "Eliminar",
+  "mark_done": "Marcar como hecha",
+  "mark_undone": "Marcar como no hecha",
+  "greeting": "Hola, {{name}}",
+  "error_empty_title": "Ingresa un título para la tarea.",
+  "loading": "Cargando...",
+  "error_invalid_email": "Ingresa una dirección de correo válida."
+}

@@ -1,6 +1,7 @@
 {
   "name": "todo-app",
   "version": "1.0.0",
+  "type": "module",
   "description": "A beginner-friendly Todo application for intern training",
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:css\" \"npm run dev:js\"",
@@ -14,14 +15,16 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
-    "test": "node --test tests/**/*.test.ts"
+    "test": "tsx --test tests/**/*.test.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "@types/node-cron": "^3.0.11",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.6.1",
     "express": "^4.21.0",
     "express-session": "^1.18.0",
+    "node-cron": "^4.6.0",
     "nodemailer": "^9.0.3",
     "pg": "^8.22.0",
     "zod": "^3.23.8"

@@ -8,6 +8,7 @@ await loadLanguage();
 
 const form = document.getElementById("registerForm") as HTMLFormElement;
 const errorBox = document.getElementById("errorMsg") as HTMLParagraphElement;
+const successBox = document.getElementById("successMsg") as HTMLParagraphElement;
 
 function showError(message: string): void {
   errorBox.textContent = message;
@@ -19,9 +20,22 @@ function clearError(): void {
   errorBox.classList.add("hidden");
 }
 
+function showSuccess(message: string): void {
+  if (!successBox) return;
+  successBox.textContent = message;
+  successBox.classList.remove("hidden");
+}
+
+function clearSuccess(): void {
+  if (!successBox) return;
+  successBox.textContent = "";
+  successBox.classList.add("hidden");
+}
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   clearError();
+  clearSuccess();
 
   const username = (document.getElementById("username") as HTMLInputElement).value.trim();
   const email = (document.getElementById("email") as HTMLInputElement).value.trim();
@@ -53,13 +67,14 @@ form.addEventListener("submit", async (e) => {
   }
 
   try {
-    const response = await api.post("/api/auth/register", { username, email, password, familyName });
-    if (response.user) {
-      localStorage.setItem('user', JSON.stringify(response.user));
+    const response = await api.post<{ verificationLink?: string }>("/api/auth/register", { username, email, password, familyName });
+    if (response.verificationLink) {
+      showSuccess(`Account created. Verify your email using this link: ${response.verificationLink}`);
+      return;
     }
-    location.replace("/pages/dashboard.html");
+    showSuccess("Account created. Check your email to verify your account.");
   } catch (err) {
-    showError(err instanceof Error ? err.message : t("error_empty_title"));
+    showError(err instanceof Error ? err.message : "Unable to create your account.");
   }
 });
 

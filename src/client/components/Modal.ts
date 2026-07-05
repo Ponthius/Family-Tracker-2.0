@@ -17,9 +17,10 @@ type ModalOptions = {
   onConfirm: () => void;
   confirmLabel?: string;
   cancelLabel?: string;
+  confirmPhrase?: string;
 };
 
-export function Modal({ title, content, onConfirm, confirmLabel = "Confirm", cancelLabel = "Cancel" }: ModalOptions) {
+export function Modal({ title, content, onConfirm, confirmLabel = "Confirm", cancelLabel = "Cancel", confirmPhrase }: ModalOptions) {
   const overlay = document.createElement("div");
   overlay.className =
     "fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden";
@@ -35,6 +36,14 @@ export function Modal({ title, content, onConfirm, confirmLabel = "Confirm", can
   body.textContent = content;
   body.className = "text-gray-600 mb-6";
 
+  const confirmInput = document.createElement("input");
+  if (confirmPhrase) {
+    confirmInput.type = "text";
+    confirmInput.placeholder = `Type ${confirmPhrase} to confirm`;
+    confirmInput.className =
+      "w-full border border-gray-300 rounded-lg px-3 py-2 mb-4 outline-none focus:border-red-500";
+  }
+
   const actions = document.createElement("div");
   actions.className = "flex justify-end gap-3";
 
@@ -49,12 +58,18 @@ export function Modal({ title, content, onConfirm, confirmLabel = "Confirm", can
   confirmBtn.className =
     "px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors";
   confirmBtn.addEventListener("click", () => {
+    if (confirmPhrase && confirmInput.value.trim() !== confirmPhrase) {
+      confirmInput.focus();
+      return;
+    }
     onConfirm();
     close();
   });
 
   actions.append(cancelBtn, confirmBtn);
-  dialog.append(heading, body, actions);
+  dialog.append(heading, body);
+  if (confirmPhrase) dialog.append(confirmInput);
+  dialog.append(actions);
   overlay.appendChild(dialog);
 
   overlay.addEventListener("click", (e) => {
