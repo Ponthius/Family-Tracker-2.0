@@ -15,5 +15,6 @@
   "greeting": "Hujambo, {{name}}",
   "error_empty_title": "Tafadhali weka kichwa cha kazi.",
   "loading": "Inapakia...",
-  "error_invalid_email": "Tafadhali weka anwani halali ya barua pepe."
+  "error_invalid_email": "Tafadhali weka anwani halali ya barua pepe.",
+  "task_created": "Kazi imeundwa kikamilifu."
 }

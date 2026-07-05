@@ -15,5 +15,6 @@
   "greeting": "Gyebale ko, {{name}}",
   "error_empty_title": "Tafuna mutwe gw'omulimu.",
   "loading": "Kitwala ekiseera...",
-  "error_invalid_email": "Yingiza email entuufu."
+  "error_invalid_email": "Yingiza email entuufu.",
+  "task_created": "Omulimu guwandiikiddwa bulungi."
 }

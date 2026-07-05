@@ -15,5 +15,6 @@
   "greeting": "Hola, {{name}}",
   "error_empty_title": "Ingresa un título para la tarea.",
   "loading": "Cargando...",
-  "error_invalid_email": "Ingresa una dirección de correo válida."
+  "error_invalid_email": "Ingresa una dirección de correo válida.",
+  "task_created": "Tarea creada correctamente."
 }
