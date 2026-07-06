@@ -30,6 +30,7 @@ export function getFamilyMembers(familyId: string) {
       username: true,
       email: true,
       role: true,
+      emailVerified: true,
       createdAt: true
     }
   });
