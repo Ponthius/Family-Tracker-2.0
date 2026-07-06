@@ -18,14 +18,14 @@
       
       <a href="/pages/dashboard.html" class="flex items-center gap-3 font-serif text-2xl font-bold text-[#5a4038] no-underline">
         <i class="fas fa-users text-[1.7rem] text-[#8b7355]"></i>
-        <span>Family Tracker</span>
+        <span data-family-name>Family Tracker</span>
       </a>
     </div>
     <div class="flex-1 py-8 px-4 flex flex-col gap-2">
       <a href="/pages/dashboard.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline bg-[#3d3530] text-[#f5f1ec]" data-page="dashboard">
         <i class="fas fa-tachometer-alt w-6 text-xl text-[#f5f1ec]"></i><span>Dashboard</span>
       </a>
-      <a href="/pages/todos.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="todos">
+      <a href="/pages/tasks.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="tasks">
         <i class="fas fa-calendar-alt w-6 text-xl text-[#7b6b5f]"></i><span>Tasks</span>
       </a>
       <a href="/pages/members.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="members">
@@ -64,7 +64,7 @@
     <div id="notifDropdown" class="hidden absolute right-20 top-[70px] bg-[#f5f1ec] border border-[#e0d6ce] rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.18)] w-80 max-h-[300px] overflow-y-auto z-[1000] py-3"></div>
 
     <div class="flex flex-wrap gap-6 mb-10">
-      <a href="/pages/todos.html" class="flex-1 min-w-[180px] bg-[#fefaf6] rounded-3xl p-5 flex items-center justify-between shadow-[0_2px_8px_rgba(0,0,0,0.03)] border border-[#e7dfd7] transition-all duration-200 cursor-pointer no-underline hover:-translate-y-1 hover:border-[#cfc3b8] hover:shadow-[0_12px_20px_-12px_rgba(0,0,0,0.1)]">
+      <a href="/pages/tasks.html" class="flex-1 min-w-[180px] bg-[#fefaf6] rounded-3xl p-5 flex items-center justify-between shadow-[0_2px_8px_rgba(0,0,0,0.03)] border border-[#e7dfd7] transition-all duration-200 cursor-pointer no-underline hover:-translate-y-1 hover:border-[#cfc3b8] hover:shadow-[0_12px_20px_-12px_rgba(0,0,0,0.1)]">
         <div>
           <h3 class="text-[0.85rem] font-semibold uppercase tracking-wider text-[#9b8a7a] mb-2">
             <i class="fas fa-calendar-week"></i> TOTAL Tasks
@@ -73,7 +73,7 @@
         </div>
         <div class="text-[2.4rem] text-[#cbbcaa]"><i class="fas fa-calendar-check"></i></div>
       </a>
-      <a href="/pages/todos.html" class="flex-1 min-w-[180px] bg-[#fefaf6] rounded-3xl p-5 flex items-center justify-between shadow-[0_2px_8px_rgba(0,0,0,0.03)] border border-[#e7dfd7] transition-all duration-200 cursor-pointer no-underline hover:-translate-y-1 hover:border-[#cfc3b8] hover:shadow-[0_12px_20px_-12px_rgba(0,0,0,0.1)]">
+      <a href="/pages/tasks.html" class="flex-1 min-w-[180px] bg-[#fefaf6] rounded-3xl p-5 flex items-center justify-between shadow-[0_2px_8px_rgba(0,0,0,0.03)] border border-[#e7dfd7] transition-all duration-200 cursor-pointer no-underline hover:-translate-y-1 hover:border-[#cfc3b8] hover:shadow-[0_12px_20px_-12px_rgba(0,0,0,0.1)]">
         <div>
           <h3 class="text-[0.85rem] font-semibold uppercase tracking-wider text-[#9b8a7a] mb-2">
             <i class="fas fa-users"></i> FAMILY MEMBERS
@@ -82,7 +82,7 @@
         </div>
         <div class="text-[2.4rem] text-[#cbbcaa]"><i class="fas fa-user-friends"></i></div>
       </a>
-      <a href="/pages/todos.html" class="flex-1 min-w-[180px] bg-[#fefaf6] rounded-3xl p-5 flex items-center justify-between shadow-[0_2px_8px_rgba(0,0,0,0.03)] border border-[#e7dfd7] transition-all duration-200 cursor-pointer no-underline hover:-translate-y-1 hover:border-[#cfc3b8] hover:shadow-[0_12px_20px_-12px_rgba(0,0,0,0.1)]">
+      <a href="/pages/tasks.html" class="flex-1 min-w-[180px] bg-[#fefaf6] rounded-3xl p-5 flex items-center justify-between shadow-[0_2px_8px_rgba(0,0,0,0.03)] border border-[#e7dfd7] transition-all duration-200 cursor-pointer no-underline hover:-translate-y-1 hover:border-[#cfc3b8] hover:shadow-[0_12px_20px_-12px_rgba(0,0,0,0.1)]">
         <div>
           <h3 class="text-[0.85rem] font-semibold uppercase tracking-wider text-[#9b8a7a] mb-2">
             <i class="fas fa-hourglass-half"></i> ACTIVE SCHEDULES
@@ -91,7 +91,7 @@
         </div>
         <div class="text-[2.4rem] text-[#cbbcaa]"><i class="fas fa-tasks"></i></div>
       </a>
-      <a href="/pages/todos.html" class="flex-1 min-w-[180px] bg-[#fefaf6] rounded-3xl p-5 flex items-center justify-between shadow-[0_2px_8px_rgba(0,0,0,0.03)] border border-[#e7dfd7] transition-all duration-200 cursor-pointer no-underline hover:-translate-y-1 hover:border-[#cfc3b8] hover:shadow-[0_12px_20px_-12px_rgba(0,0,0,0.1)]">
+      <a href="/pages/tasks.html" class="flex-1 min-w-[180px] bg-[#fefaf6] rounded-3xl p-5 flex items-center justify-between shadow-[0_2px_8px_rgba(0,0,0,0.03)] border border-[#e7dfd7] transition-all duration-200 cursor-pointer no-underline hover:-translate-y-1 hover:border-[#cfc3b8] hover:shadow-[0_12px_20px_-12px_rgba(0,0,0,0.1)]">
         <div>
           <h3 class="text-[0.85rem] font-semibold uppercase tracking-wider text-[#9b8a7a] mb-2">
             <i class="fas fa-star"></i> UPCOMING
@@ -156,7 +156,7 @@
   <a href="/pages/dashboard.html" class="flex flex-col items-center text-xs text-[#3d3530] font-bold gap-1 cursor-pointer no-underline" data-page="dashboard">
     <i class="fas fa-home text-xl"></i><span>Home</span>
   </a>
-  <a href="/pages/todos.html" class="flex flex-col items-center text-xs text-[#7b6b5f] gap-1 cursor-pointer no-underline" data-page="todos">
+  <a href="/pages/tasks.html" class="flex flex-col items-center text-xs text-[#7b6b5f] gap-1 cursor-pointer no-underline" data-page="tasks">
     <i class="fas fa-calendar-alt text-xl"></i><span>Tasks</span>
   </a>
   <a href="/pages/members.html" class="flex flex-col items-center text-xs text-[#7b6b5f] gap-1 cursor-pointer no-underline" data-page="members">
@@ -182,7 +182,7 @@
     <a href="/pages/dashboard.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] cursor-pointer no-underline bg-[#3d3530] text-[#f5f1ec]" data-page="dashboard">
       <i class="fas fa-tachometer-alt w-6"></i><span>Dashboard</span>
     </a>
-    <a href="/pages/todos.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] cursor-pointer no-underline" data-page="todos">
+    <a href="/pages/tasks.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] cursor-pointer no-underline" data-page="tasks">
       <i class="fas fa-calendar-alt w-6"></i><span>Tasks</span>
     </a>
     <a href="/pages/members.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] cursor-pointer no-underline" data-page="members">
