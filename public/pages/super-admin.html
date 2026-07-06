@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Super Admin - Family Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body class="bg-[#e8e2d9] font-sans min-h-screen">
+
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <aside class="w-[280px] bg-[#f5f1ec] shadow-[2px_0_12px_rgba(0,0,0,0.04)] flex flex-col sticky top-0 h-screen border-r border-[#e0d6ce] hidden md:flex">
+    <div class="px-6 pt-8 pb-6 border-b border-[#e2d8d0]">
+      <a href="/pages/super-admin.html" class="flex items-center gap-3 font-serif text-2xl font-bold text-[#5a4038] no-underline">
+        <i class="fas fa-shield-alt text-[1.7rem] text-[#8b7355]"></i>
+        <span data-family-name>Super Admin</span>
+      </a>
+    </div>
+    <div class="flex-1 py-8 px-4 flex flex-col gap-2">
+      <a href="/pages/super-admin.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium bg-[#3d3530] text-[#f5f1ec] transition-all cursor-pointer no-underline" data-page="super-admin">
+        <i class="fas fa-building w-6 text-xl text-[#f5f1ec]"></i><span>Tenants</span>
+      </a>
+      <a href="/pages/audit-super.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="audit-super">
+        <i class="fas fa-history w-6 text-xl text-[#7b6b5f]"></i><span>Audit Logs</span>
+      </a>
+      <a href="/pages/dashboard.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="dashboard">
+        <i class="fas fa-arrow-left w-6 text-xl text-[#7b6b5f]"></i><span>Back to App</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex-1 p-7 bg-[#ede7e0] pb-20 md:pb-7">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-3xl font-semibold text-[#2c2420] font-serif">Tenant Management</h1>
+        <p class="text-[#7a6e66] text-sm mt-1">Overview of all registered families</p>
+      </div>
+    </div>
+
+    <!-- Message box -->
+    <div id="messageBox" class="hidden rounded-lg border px-4 py-3 text-sm mb-4"></div>
+
+    <!-- Stats cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="bg-[#f5f1ec] rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-5">
+        <p class="text-[#7a6e66] text-xs uppercase tracking-wide">Total Families</p>
+        <p id="totalFamilies" class="text-3xl font-bold text-[#2c2420] font-serif mt-1">—</p>
+      </div>
+      <div class="bg-[#f5f1ec] rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-5">
+        <p class="text-[#7a6e66] text-xs uppercase tracking-wide">Total Members</p>
+        <p id="totalMembers" class="text-3xl font-bold text-[#2c2420] font-serif mt-1">—</p>
+      </div>
+      <div class="bg-[#f5f1ec] rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-5">
+        <p class="text-[#7a6e66] text-xs uppercase tracking-wide">Active</p>
+        <p id="activeFamilies" class="text-3xl font-bold text-[#2c2420] font-serif mt-1">—</p>
+      </div>
+    </div>
+
+    <!-- Tenants table -->
+    <div class="bg-[#f5f1ec] rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-6">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-[#e0d6ce] text-left">
+              <th class="pb-3 font-semibold text-[#5a4e46]">Family</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]">Admin</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]">Email</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]">Members</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]">Created</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]">Status</th>
+            </tr>
+          </thead>
+          <tbody id="tenantsBody">
+            <tr><td colspan="6" class="py-8 text-center text-[#9b8a7a]">Loading tenants...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script type="module" src="/scripts/super-admin.js"></script>
+</body>
+</html>
