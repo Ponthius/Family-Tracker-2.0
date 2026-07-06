@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Family Tracker · Members</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body class="bg-[#e8e2d9] font-sans min-h-screen">
+
+<div class="flex min-h-screen">
+  <aside class="w-[280px] bg-[#f5f1ec] shadow-[2px_0_12px_rgba(0,0,0,0.04)] flex flex-col sticky top-0 h-screen border-r border-[#e0d6ce] transition-all duration-200 hidden md:flex">
+    <div class="px-6 pt-8 pb-6 border-b border-[#e2d8d0]">
+      <button id="myBackButton" class="w-full bg-transparent border border-[#dcdcdc] rounded-md px-3 py-2 cursor-pointer text-[0.85rem] text-[#555] mb-4 flex items-center gap-2 transition-colors hover:bg-[#f0f0f0]" aria-label="Go back">
+        <i class="fas fa-arrow-left"></i> <span>Back</span>
+      </button>
+      
+      <a href="/pages/dashboard.html" class="flex items-center gap-3 font-serif text-2xl font-bold text-[#5a4038] no-underline">
+        <i class="fas fa-users text-[1.7rem] text-[#8b7355]"></i>
+        <span>Family Tracker</span>
+      </a>
+    </div>
+    <div class="flex-1 py-8 px-4 flex flex-col gap-2">
+      <a href="/pages/dashboard.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="dashboard">
+        <i class="fas fa-tachometer-alt w-6 text-xl text-[#7b6b5f]"></i><span>Dashboard</span>
+      </a>
+      <a href="/pages/tasks.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="tasks">
+        <i class="fas fa-calendar-alt w-6 text-xl text-[#7b6b5f]"></i><span>Tasks</span>
+      </a>
+      <a href="/pages/members.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline bg-[#3d3530] text-[#f5f1ec]" data-page="members">
+        <i class="fas fa-user-friends w-6 text-xl text-[#f5f1ec]"></i><span>Members</span>
+      </a>
+      <a href="/pages/schedules.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="schedules">
+        <i class="fas fa-clock w-6 text-xl text-[#7b6b5f]"></i><span>Schedules</span>
+      </a>
+      <a href="/pages/profile.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="profile">
+        <i class="fas fa-user-circle w-6 text-xl text-[#7b6b5f]"></i><span>Profile</span>
+      </a>
+    </div>
+  </aside>
+
+  <main class="flex-1 p-7 bg-[#ede7e0] transition-all pb-20 md:pb-7">
+    <div class="flex justify-between items-center flex-wrap gap-4 mb-8">
+      <h1 class="text-3xl font-semibold text-[#2c2420] font-serif">Family Members</h1>
+      <div class="flex gap-3 items-center">
+        <a href="/pages/profile.html" class="bg-[#fefaf5] px-4 py-2 rounded-full flex items-center gap-3 shadow-sm border border-[#e0d6ce] cursor-pointer transition-colors hover:bg-[#e8e0d8] no-underline">
+          <i class="fas fa-user-circle text-xl text-[#8b7355]"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto rounded-3xl bg-[#fdfaf7] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.08)] border border-[#ece2da]">
+      <table class="w-full border-collapse">
+        <thead class="bg-[#3d3530] text-[#f5f1ec]">
+          <tr>
+            <th class="px-4 py-[14px] text-left font-semibold">Role</th>
+            <th class="px-4 py-[14px] text-left font-semibold">Username</th>
+            <th class="px-4 py-[14px] text-left font-semibold">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-[#c8bfb5] hover:bg-[#faf8f5]">
+            <td class="px-4 py-[14px] text-[#2c2420]">
+              <span class="inline-block rounded-full bg-[#d8cec3] px-3 py-1 text-[0.85rem] font-bold text-[#3d3530]">Father</span>
+            </td>
+            <td class="px-4 py-[14px] text-[#2c2420]"></td>
+            <td class="px-4 py-[14px] text-[#2c2420]"></td>
+          </tr>
+          <tr class="border-b border-[#c8bfb5] hover:bg-[#faf8f5]">
+            <td class="px-4 py-[14px] text-[#2c2420]">
+              <span class="inline-block rounded-full bg-[#e3d7cf] px-3 py-1 text-[0.85rem] font-bold text-[#5a4038]">Mother</span>
+            </td>
+            <td class="px-4 py-[14px] text-[#2c2420]"></td>
+            <td class="px-4 py-[14px] text-[#2c2420]"></td>
+          </tr>
+          <tr class="hover:bg-[#faf8f5]">
+            <td class="px-4 py-[14px] text-[#2c2420]">
+              <span class="inline-block rounded-full bg-[#ede6df] px-3 py-1 text-[0.85rem] font-bold text-[#5a4e46]">Child</span>
+            </td>
+            <td class="px-4 py-[14px] text-[#2c2420]"></td>
+            <td class="px-4 py-[14px] text-[#2c2420]"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<div class="md:hidden fixed bottom-0 left-0 right-0 bg-[#f5f1ec] flex justify-around px-4 py-2.5 border-t border-[#ddd2c8] z-[1000] backdrop-blur-sm shadow-[0_-2px_8px_rgba(0,0,0,0.05)]">
+  <a href="/pages/dashboard.html" class="flex flex-col items-center text-xs text-[#7b6b5f] gap-1 cursor-pointer no-underline" data-page="dashboard">
+    <i class="fas fa-home text-xl"></i><span>Home</span>
+  </a>
+  <a href="/pages/tasks.html" class="flex flex-col items-center text-xs text-[#7b6b5f] gap-1 cursor-pointer no-underline" data-page="tasks">
+    <i class="fas fa-calendar-alt text-xl"></i><span>Tasks</span>
+  </a>
+  <a href="/pages/members.html" class="flex flex-col items-center text-xs text-[#3d3530] font-bold gap-1 cursor-pointer no-underline" data-page="members">
+    <i class="fas fa-users text-xl"></i><span>Members</span>
+  </a>
+  <a href="/pages/schedules.html" class="flex flex-col items-center text-xs text-[#7b6b5f] gap-1 cursor-pointer no-underline" data-page="schedules">
+    <i class="fas fa-clock text-xl"></i><span>Schedules</span>
+  </a>
+  <a href="/pages/profile.html" class="flex flex-col items-center text-xs text-[#7b6b5f] gap-1 cursor-pointer no-underline" data-page="profile">
+    <i class="fas fa-user-circle text-xl"></i><span>Profile</span>
+  </a>
+</div>
+
+<script>
+document.getElementById('myBackButton')?.addEventListener('click', () => window.history.back());
+</script>
+</body>
+</html>
