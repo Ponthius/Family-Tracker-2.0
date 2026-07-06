@@ -1,27 +1,16 @@
-document.addEventListener("DOMContentLoaded",()=>{let i=1,F=0,s=document.getElementById("familyTableBody"),l=document.getElementById("auditTableBody"),L=document.getElementById("noFamilies"),f=document.getElementById("noAudit"),c=document.getElementById("auditPanelTitle"),h=document.getElementById("pagination"),T=document.getElementById("familySearch"),m=document.getElementById("filterSearch"),r=document.getElementById("filterFamily"),u=document.getElementById("filterRole"),p=document.getElementById("filterAction"),b=document.getElementById("filterStatus"),v=document.getElementById("filterDateFrom"),y=document.getElementById("filterDateTo"),H=document.getElementById("clearFilterBtn"),w=e=>e.classList.remove("hidden"),g=e=>e.classList.add("hidden");function x(e){return e?new Date(e).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}):""}function S(e){return e.charAt(0).toUpperCase()+e.slice(1)}async function B(e=""){let t=new URLSearchParams;e&&t.set("search",e);let n=await fetch(`/api/audit/families-overview?${t}`);if(!n.ok)throw new Error("Failed to load family overview.");return(await n.json()).data}async function I(){let e=new URLSearchParams({page:String(i),limit:String(8),search:m.value.trim(),family:r.value,role:u.value,action:p.value,status:b.value,dateFrom:v.value,dateTo:y.value}),t=await fetch(`/api/audit/all?${e}`);if(!t.ok)throw new Error("Failed to load audit logs.");return await t.json()}function _(e){if(s.innerHTML="",!e||e.length===0){w(L);return}g(L),e.forEach(t=>{let a=t.status==="active"?"bg-[#dff0d8] text-[#3c5a3c]":"bg-[#fef3cd] text-[#7a5a10]",o=document.createElement("tr");o.className="hover:bg-[#f0ebe3] transition-colors",o.innerHTML=`
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8]">${t.family_name}</td>
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8]">${t.admin_username}</td>
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8]">${t.member_count}</td>
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8]">
-          <span class="inline-block px-[9px] py-[2px] rounded-full text-[0.75rem] font-semibold ${a}">${S(t.status)}</span>
-        </td>
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8] whitespace-nowrap">${x(t.date_created)}</td>
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8] whitespace-nowrap">${x(t.last_activity)||"\u2014"}</td>
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8]">
-          <button class="text-[#5a4038] text-[0.84rem] underline cursor-pointer bg-none border-none hover:text-[#2c2420]"
-                  data-family="${t.family_name}">View Logs</button>
-        </td>
-      `,s.appendChild(o)}),s.querySelectorAll("button[data-family]").forEach(t=>{t.addEventListener("click",()=>{let n=t.getAttribute("data-family")??"";r.value=n,c.textContent=`Audit Logs \u2014 ${n}`,i=1,d(),c.scrollIntoView({behavior:"smooth"})})})}function $(e,t){if(l.innerHTML="",!e||e.length===0){w(f),A(0);return}g(f),e.forEach(n=>{let o=n.status==="Success"?"bg-[#dff0d8] text-[#3c5a3c]":"bg-[#f0dede] text-[#7a2020]",E=document.createElement("tr");E.className="hover:bg-[#f0ebe3] transition-colors",E.innerHTML=`
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8]">${n.username}</td>
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8]">
-          <span class="inline-block px-[9px] py-[2px] rounded-full text-[0.75rem] bg-[#ece1d2] text-[#5a4038] capitalize">${n.role.replace(/_/g," ")}</span>
-        </td>
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8]">${n.family||"\u2014"}</td>
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8]">${n.action}</td>
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8] whitespace-nowrap">${x(n.date)}</td>
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8] whitespace-nowrap">${n.time}</td>
-        <td class="px-3 py-[10px] border-b border-[#ddd4c8]">
-          <span class="inline-block px-[9px] py-[2px] rounded-full text-[0.75rem] font-semibold ${o}">${n.status}</span>
-        </td>
-      `,l.appendChild(E)}),A(t)}function A(e){h.innerHTML="";let t=Math.ceil(e/8);if(!(t<=1))for(let n=1;n<=t;n++){let a=document.createElement("button"),o=n===i;a.className=`px-3 py-[6px] rounded-md border text-[0.82rem] cursor-pointer transition-colors
-        ${o?"bg-[#3d3530] text-[#f5f1ec] border-[#3d3530]":"bg-[#faf8f5] text-[#5a4e46] border-[#c8bfb5] hover:bg-[#ece6dd]"}`,a.textContent=String(n),a.addEventListener("click",()=>{i=n,d()}),h.appendChild(a)}}async function M(e=""){try{let t=await B(e);r.innerHTML='<option value="">All Families</option>',t.forEach(n=>{let a=document.createElement("option");a.value=n.family_name,a.textContent=n.family_name,r.appendChild(a)}),_(t)}catch(t){let n=t instanceof Error?t.message:String(t);console.error("[FamilyOverview]",n),s.innerHTML='<tr><td colspan="7" class="text-center text-[#7a6e66] py-4">Failed to load family accounts.</td></tr>'}}async function d(){l.innerHTML='<tr><td colspan="7" class="text-center text-[#7a6e66] py-4">Loading...</td></tr>',g(f);try{let{data:e,total:t}=await I();F=t,$(e,t),!r.value&&!u.value&&!p.value&&!b.value&&!v.value&&!y.value&&!m.value.trim()&&(c.textContent="All Audit Logs")}catch(e){let t=e instanceof Error?e.message:String(e);console.error("[AuditLogs]",t),l.innerHTML='<tr><td colspan="7" class="text-center text-[#7a6e66] py-4">Failed to load audit logs.</td></tr>'}}T.addEventListener("input",()=>{M(T.value.trim())}),[m,r,u,p,b,v,y].forEach(e=>e.addEventListener("input",()=>{i=1,d()})),H.addEventListener("click",()=>{m.value=r.value=u.value=p.value=b.value=v.value=y.value="",c.textContent="All Audit Logs",i=1,d()}),M(),d()});
+function r(){let t=localStorage.getItem("familyBranding");if(!t)return null;try{return JSON.parse(t)}catch{return null}}async function d(){let t=r();if(!t)try{let a=await fetch("/api/auth/me",{credentials:"include"});if(a.ok){let n=await a.json();t=n.user?.family??null,t&&localStorage.setItem("familyBranding",JSON.stringify(t)),n.user?.language&&localStorage.setItem("language",n.user.language)}}catch{t=null}t&&(t.name&&document.querySelectorAll("[data-family-name]").forEach(a=>{a.textContent=t?.name??""}),t.accentColor&&document.documentElement.style.setProperty("--theme-color",t.accentColor))}var c=document.getElementById("tenantsBody"),m=document.getElementById("auditTableBody"),l=document.getElementById("messageBox"),u=document.getElementById("totalFamilies"),g=document.getElementById("totalMembers"),y=document.getElementById("activeFamilies");function o(t){l.textContent=t,l.classList.remove("hidden")}async function p(){let t=await fetch("/api/family/tenants",{credentials:"include"});if(!t.ok)throw new Error("Failed to load tenants.");let n=(await t.json()).tenants||[];u.textContent=String(n.length),g.textContent=String(n.reduce((e,s)=>e+(s.memberCount||0),0)),y.textContent=String(n.filter(e=>!e.deletedAt).length),c.innerHTML=n.map(e=>{let s=new Date(e.createdAt).toLocaleDateString(),i=e.deletedAt?'<span class="bg-[#fceeee] text-[#a13d3d] text-xs px-2 py-0.5 rounded">Deleted</span>':'<span class="bg-[#e7efe2] text-[#3c5a3c] text-xs px-2 py-0.5 rounded">Active</span>';return`<tr class="border-b border-[#e0d6ce]">
+      <td class="py-3 font-medium text-[#2c2420]">${e.name}</td>
+      <td class="py-3 text-[#5a4e46]">${e.adminUsername}</td>
+      <td class="py-3 text-[#5a4e46]">\u2014</td>
+      <td class="py-3">${e.memberCount}</td>
+      <td class="py-3 text-[#7a6e66]">${s}</td>
+      <td class="py-3">${i}</td>
+    </tr>`}).join("")}async function f(){let t=await fetch("/api/audit",{credentials:"include"});if(!t.ok)throw new Error("Failed to load audit logs.");let n=(await t.json()).logs||[];m.innerHTML=n.map(e=>{let s=new Date(e.createdAt);return`<tr class="border-b border-[#e0d6ce]">
+      <td class="py-3 text-[#2c2420]">${e.actorUserId??"\u2014"}</td>
+      <td class="py-3 text-[#5a4e46]">Super Admin</td>
+      <td class="py-3 text-[#5a4e46]">${e.familyId??"All Families"}</td>
+      <td class="py-3 text-[#5a4e46]">${e.action}</td>
+      <td class="py-3 text-[#5a4e46]">${s.toLocaleDateString()}</td>
+      <td class="py-3 text-[#5a4e46]">${s.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"})}</td>
+      <td class="py-3"><span class="bg-[#e7efe2] text-[#3c5a3c] text-xs px-2 py-0.5 rounded">Success</span></td>
+    </tr>`}).join("")}d().catch(()=>{});p().catch(t=>o(t instanceof Error?t.message:"Failed to load tenants."));f().catch(t=>o(t instanceof Error?t.message:"Failed to load audit logs."));
