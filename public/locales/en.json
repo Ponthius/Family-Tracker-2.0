@@ -14,6 +14,8 @@
   "mark_undone": "Mark as not done",
   "greeting": "Hello, {{name}}",
   "error_empty_title": "Please enter a todo title.",
+  "loading": "Loading…",
+  "error_invalid_email": "Please enter a valid email address.",
   "loading": "Loading...",
   "error_invalid_email": "Please enter a valid email address.",
   "task_created": "Task created successfully."
