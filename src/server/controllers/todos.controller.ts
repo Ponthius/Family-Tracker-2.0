@@ -21,10 +21,12 @@ export async function createTodo(req: Request, res: Response, next: NextFunction
     const { title, description, dueDate, assignedToUserId } = req.body as {
       title: string;
       description?: string;
+      status?: string;
       dueDate?: string;
       assignedToUserId?: string;
     };
-    const todo = await addTodo(req.session.userId!, { title, description, dueDate, assignedToUserId });
+    const { status } = req.body as { status?: string };
+    const todo = await addTodo(req.session.userId!, { title, description, status, dueDate, assignedToUserId });
     res.status(201).json({ todo });
   } catch (err) {
     next(err);
