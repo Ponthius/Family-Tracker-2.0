@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Schedules - Family Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body class="bg-[#e8e2d9] font-sans min-h-screen">
+
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <aside class="w-[280px] bg-[#f5f1ec] shadow-[2px_0_12px_rgba(0,0,0,0.04)] flex flex-col sticky top-0 h-screen border-r border-[#e0d6ce] hidden md:flex">
+    <div class="px-6 pt-8 pb-6 border-b border-[#e2d8d0]">
+      <a href="/pages/dashboard.html" class="flex items-center gap-3 font-serif text-2xl font-bold text-[#5a4038] no-underline">
+        <i class="fas fa-users text-[1.7rem] text-[#8b7355]"></i>
+        <span data-family-name>Family Tracker</span>
+      </a>
+    </div>
+    <div class="flex-1 py-8 px-4 flex flex-col gap-2">
+      <a href="/pages/dashboard.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="dashboard">
+        <i class="fas fa-tachometer-alt w-6 text-xl text-[#7b6b5f]"></i><span>Dashboard</span>
+      </a>
+      <a href="/pages/tasks.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="tasks">
+        <i class="fas fa-calendar-alt w-6 text-xl text-[#7b6b5f]"></i><span>Tasks</span>
+      </a>
+      <a href="/pages/members.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="members">
+        <i class="fas fa-user-friends w-6 text-xl text-[#7b6b5f]"></i><span>Members</span>
+      </a>
+      <a href="/pages/schedules.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium bg-[#3d3530] text-[#f5f1ec] transition-all cursor-pointer no-underline" data-page="schedules">
+        <i class="fas fa-clock w-6 text-xl text-[#f5f1ec]"></i><span>Schedules</span>
+      </a>
+      <a href="/pages/profile.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="profile">
+        <i class="fas fa-user-circle w-6 text-xl text-[#7b6b5f]"></i><span>Profile</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex-1 p-7 bg-[#ede7e0] pb-20 md:pb-7">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-3xl font-semibold text-[#2c2420] font-serif">Family Schedules</h1>
+        <p class="text-[#7a6e66] text-sm mt-1">Upcoming tasks and events</p>
+      </div>
+      <button id="createScheduleBtn" class="rounded-md bg-[#3d3530] text-[#f5f1ec] px-4 py-2 text-sm hover:bg-[#2c2420] transition-colors">
+        <i class="fas fa-plus mr-1"></i> Add Schedule
+      </button>
+    </div>
+
+    <!-- Date filter tabs -->
+    <div class="flex flex-wrap gap-2 mb-6">
+      <button class="schedule-filter px-4 py-2 rounded-md text-sm bg-[#f5f1ec] text-[#5a4e46] hover:bg-[#e8e0d8] transition-colors" data-range="today">Today</button>
+      <button class="schedule-filter px-4 py-2 rounded-md text-sm bg-[#f5f1ec] text-[#5a4e46] hover:bg-[#e8e0d8] transition-colors" data-range="tomorrow">Tomorrow</button>
+      <button class="schedule-filter px-4 py-2 rounded-md text-sm bg-[#f5f1ec] text-[#5a4e46] hover:bg-[#e8e0d8] transition-colors" data-range="week">This Week</button>
+      <button class="schedule-filter px-4 py-2 rounded-md text-sm bg-[#f5f1ec] text-[#5a4e46] hover:bg-[#e8e0d8] transition-colors" data-range="month">This Month</button>
+      <button class="schedule-filter px-4 py-2 rounded-md text-sm bg-[#3d3530] text-[#f5f1ec] transition-colors" data-range="all">All</button>
+    </div>
+
+    <!-- Schedules table -->
+    <div class="bg-[#f5f1ec] rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-6">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-[#e0d6ce] text-left">
+              <th class="pb-3 font-semibold text-[#5a4e46]">Event</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]">Role</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]">Username</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]">Date</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]">Time</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]">Status</th>
+            </tr>
+          </thead>
+          <tbody id="schedulesBody">
+            <tr><td colspan="5" class="py-8 text-center text-[#9b8a7a]">Loading schedules...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="scheduleModal" class="hidden fixed inset-0 bg-[rgba(44,36,32,0.45)] flex items-center justify-center p-5 z-50">
+  <div class="bg-[#f5f1ec] rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.18)] w-full max-w-[420px] p-7">
+    <h2 class="font-serif text-[1.25rem] font-bold text-[#2c2420] mb-4">Add Schedule</h2>
+    <div class="flex flex-col gap-3">
+      <input id="scheduleTitle" class="px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5]" placeholder="Event title">
+      <input id="scheduleDate" type="date" class="px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5]">
+      <input id="scheduleTime" type="time" class="px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5]">
+      <select id="scheduleStatus" class="px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5]">
+        <option value="unoccupied">Unoccupied</option>
+        <option value="occupied">Occupied</option>
+      </select>
+      <div class="flex justify-end gap-3 mt-2">
+        <button id="cancelScheduleBtn" class="px-4 py-2 rounded-md border border-[#c8bfb5] text-[#5a4e46]">Cancel</button>
+        <button id="saveScheduleBtn" class="px-4 py-2 rounded-md bg-[#3d3530] text-[#f5f1ec]">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="/scripts/schedules.js"></script>
+</body>
+</html>
