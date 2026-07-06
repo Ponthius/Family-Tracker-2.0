@@ -6,22 +6,75 @@ redirectIfLoggedIn();
 
 await loadLanguage();
 
-const form = document.getElementById("register-form") as HTMLFormElement;
-const errorBox = document.getElementById("error-message") as HTMLParagraphElement;
+const form = document.getElementById("registerForm") as HTMLFormElement;
+const errorBox = document.getElementById("errorMsg") as HTMLParagraphElement;
+const successBox = document.getElementById("successMsg") as HTMLParagraphElement;
+
+function showError(message: string): void {
+  errorBox.textContent = message;
+  errorBox.classList.remove("hidden");
+}
+
+function clearError(): void {
+  errorBox.textContent = "";
+  errorBox.classList.add("hidden");
+}
+
+function showSuccess(message: string): void {
+  if (!successBox) return;
+  successBox.textContent = message;
+  successBox.classList.remove("hidden");
+}
+
+function clearSuccess(): void {
+  if (!successBox) return;
+  successBox.textContent = "";
+  successBox.classList.add("hidden");
+}
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  errorBox.textContent = "";
+  clearError();
+  clearSuccess();
 
-  const name = (document.getElementById("name") as HTMLInputElement).value;
-  const email = (document.getElementById("email") as HTMLInputElement).value;
+  const username = (document.getElementById("username") as HTMLInputElement).value.trim();
+  const email = (document.getElementById("email") as HTMLInputElement).value.trim();
   const password = (document.getElementById("password") as HTMLInputElement).value;
+  const confirmPassword = (document.getElementById("confirmPassword") as HTMLInputElement).value;
+  const familyName = (document.getElementById("familyName") as HTMLInputElement).value.trim();
+
+  // Validation
+  if (!username || !email || !password || !confirmPassword || !familyName) {
+    showError("All fields are required.");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    showError("Passwords do not match.");
+    return;
+  }
+
+  if (password.length < 6) {
+    showError("Password must be at least 6 characters long.");
+    return;
+  }
+
+  // Basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    showError("Please enter a valid email address.");
+    return;
+  }
 
   try {
-    await api.post("/api/auth/register", { name, email, password });
-    location.replace("/pages/todos.html");
+    const response = await api.post<{ verificationLink?: string }>("/api/auth/register", { username, email, password, familyName });
+    if (response.verificationLink) {
+      showSuccess(`Account created. Verify your email using this link: ${response.verificationLink}`);
+      return;
+    }
+    showSuccess("Account created. Check your email to verify your account.");
   } catch (err) {
-    errorBox.textContent = err instanceof Error ? err.message : t("error_empty_title");
+    showError(err instanceof Error ? err.message : "Unable to create your account.");
   }
 });
 

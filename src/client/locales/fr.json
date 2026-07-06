@@ -14,6 +14,7 @@
   "mark_undone": "Marquer comme non terminé",
   "greeting": "Bonjour, {{name}}",
   "error_empty_title": "Veuillez entrer un titre.",
-  "loading": "Chargement…",
+  "loading": "Chargement...",
   "error_invalid_email": "Veuillez entrer une adresse e-mail valide.",
+  "task_created": "Tâche créée avec succès."
 }

@@ -11,24 +11,63 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Family {
   id        String   @id @default(cuid())
   name      String
+  logoUrl   String?
+  deletedAt DateTime?
+  purgeAt   DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members   User[]
+  todos     Todo[]
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
   email     String   @unique
   password  String
+  role      String   @default("Member")  // "Admin" or "Member"
   language  String   @default("en")
+  emailVerified Boolean @default(false)
+  verificationToken String? @unique
+  verificationTokenExpiresAt DateTime?
+  deletedAt DateTime?
+  purgeAt   DateTime?
   createdAt DateTime @default(now())
 
+  familyId  String?
+  family    Family?  @relation(fields: [familyId], references: [id], onDelete: SetNull)
+
   todos     Todo[]
+  assignedTodos Todo[] @relation("TodoAssignee")
 }
 
 model Todo {
   id        String   @id @default(cuid())
   title     String
+  description String?
   done      Boolean  @default(false)
+  dueDate   DateTime?
+  assignedToUserId String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignedToUser User? @relation("TodoAssignee", fields: [assignedToUserId], references: [id], onDelete: SetNull)
+  familyId  String?
+  family    Family? @relation(fields: [familyId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id           String   @id @default(cuid())
+  action       String
+  actorUserId  String?
+  familyId     String?
+  targetUserId String?
+  metadata     String?
+  createdAt    DateTime @default(now())
 }

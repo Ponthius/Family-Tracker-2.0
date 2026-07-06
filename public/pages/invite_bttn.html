@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invite User</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-stone-200 flex items-center justify-center p-5">
+
+  <div class="w-full max-w-md rounded-xl bg-stone-100 shadow-lg p-8">
+
+    <h2 class="text-2xl font-bold text-center text-stone-800 font-serif mb-6">
+      Invite Family Member
+    </h2>
+
+    <form id="inviteForm" class="space-y-5">
+
+      <div>
+        <label
+          for="email"
+          class="block text-sm font-medium text-stone-600 mb-2">
+          Email Address
+        </label>
+
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter email address"
+          required
+          class="w-full rounded-md border border-stone-300 bg-stone-50 px-3 py-2 text-sm text-stone-800 outline-none transition focus:border-amber-700 focus:ring-2 focus:ring-amber-700/20"
+        />
+      </div>
+
+      <div>
+        <label
+          for="role"
+          class="block text-sm font-medium text-stone-600 mb-2">
+          Role
+        </label>
+
+        <select
+          id="role"
+          required
+          class="w-full rounded-md border border-stone-300 bg-stone-50 px-3 py-2 text-sm text-stone-800 outline-none transition focus:border-amber-700 focus:ring-2 focus:ring-amber-700/20">
+
+          <option value="">Select Role</option>
+          <option value="wife">Wife</option>
+          <option value="child">Child</option>
+
+        </select>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full rounded-md bg-stone-800 py-3 text-sm font-semibold text-white transition hover:bg-stone-900">
+        Send Invitation
+      </button>
+
+    </form>
+
+    <div
+      id="message"
+      class="mt-5 text-center text-sm">
+    </div>
+
+  </div>
+
+  <!-- This will become invite-user.js after the TypeScript is compiled -->
+  <script src="../js/invite-user.js"></script>
+
+</body>
+</html>

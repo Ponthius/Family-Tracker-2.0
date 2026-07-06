@@ -12,7 +12,7 @@ type NavbarOptions = {
 export function Navbar({ userName }: NavbarOptions): HTMLElement {
   const nav = document.createElement("nav");
   nav.className =
-    "flex items-center justify-between px-6 py-3 bg-indigo-600 text-white shadow";
+    "flex items-center justify-between px-6 py-3 bg-[#3d3530] text-[#f5f1ec] shadow";
 
   const brand = document.createElement("span");
   brand.textContent = t("app_name");
@@ -26,8 +26,8 @@ export function Navbar({ userName }: NavbarOptions): HTMLElement {
   greeting.className = "text-sm";
 
   const langSelect = document.createElement("select");
-  langSelect.className = "text-sm bg-indigo-700 text-white rounded px-1 py-0.5 cursor-pointer";
-  [["en", "English"], ["fr", "Français"]].forEach(([value, label]) => {
+  langSelect.className = "text-sm bg-[#5a4e46] text-white rounded px-1 py-0.5 cursor-pointer";
+  [["en", "English"], ["sw", "Kiswahili"], ["lg", "Luganda"], ["fr", "Français"], ["es", "Español"]].forEach(([value, label]) => {
     const opt = document.createElement("option");
     opt.value = value;
     opt.textContent = label;
@@ -39,7 +39,7 @@ export function Navbar({ userName }: NavbarOptions): HTMLElement {
   const logoutBtn = document.createElement("button");
   logoutBtn.textContent = t("logout");
   logoutBtn.className =
-    "text-sm bg-white text-indigo-600 font-semibold px-3 py-1 rounded hover:bg-indigo-50 transition-colors";
+    "text-sm bg-[#f5f1ec] text-[#3d3530] font-semibold px-3 py-1 rounded hover:bg-[#ede3d8] transition-colors";
   logoutBtn.addEventListener("click", async () => {
     try {
       await api.post("/api/auth/logout", {});

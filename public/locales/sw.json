@@ -1,0 +1,20 @@
+{
+  "app_name": "Family Tracker",
+  "login": "Ingia",
+  "logout": "Toka",
+  "register": "Fungua akaunti",
+  "email": "Barua pepe",
+  "password": "Nenosiri",
+  "name": "Jina kamili",
+  "add_todo": "Ongeza kazi",
+  "todo_placeholder": "Nini kifanyike?",
+  "no_todos": "Hakuna kazi bado. Ongeza moja juu!",
+  "delete": "Futa",
+  "mark_done": "Weka kama imekamilika",
+  "mark_undone": "Weka kama haijakamilika",
+  "greeting": "Hujambo, {{name}}",
+  "error_empty_title": "Tafadhali weka kichwa cha kazi.",
+  "loading": "Inapakia...",
+  "error_invalid_email": "Tafadhali weka anwani halali ya barua pepe.",
+  "task_created": "Kazi imeundwa kikamilifu."
+}

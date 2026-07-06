@@ -24,7 +24,7 @@ const ctx = await esbuild.context({
   outdir: "public/scripts",
   platform: "browser",
   target: "es2022",
-  sourcemap: watch ? "inline" : false,
+	  sourcemap: false,
   minify: !watch,
 });
 

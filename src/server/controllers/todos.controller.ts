@@ -4,6 +4,7 @@ import {
   addTodo,
   editTodo,
   removeTodo,
+  getAssignableFamilyMembers,
 } from "../services/todos.service.js";
 
 export async function listTodos(req: Request, res: Response, next: NextFunction) {
@@ -17,8 +18,13 @@ export async function listTodos(req: Request, res: Response, next: NextFunction)
 
 export async function createTodo(req: Request, res: Response, next: NextFunction) {
   try {
-    const { title } = req.body as { title: string };
-    const todo = await addTodo(req.session.userId!, title);
+    const { title, description, dueDate, assignedToUserId } = req.body as {
+      title: string;
+      description?: string;
+      dueDate?: string;
+      assignedToUserId?: string;
+    };
+    const todo = await addTodo(req.session.userId!, { title, description, dueDate, assignedToUserId });
     res.status(201).json({ todo });
   } catch (err) {
     next(err);
@@ -42,6 +48,15 @@ export async function deleteTodo(req: Request, res: Response, next: NextFunction
   try {
     await removeTodo(req.params["id"]!, req.session.userId!);
     res.json({ message: "Todo deleted." });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function listAssignableMembers(req: Request, res: Response, next: NextFunction) {
+  try {
+    const members = await getAssignableFamilyMembers(req.session.userId!);
+    res.json({ members });
   } catch (err) {
     next(err);
   }

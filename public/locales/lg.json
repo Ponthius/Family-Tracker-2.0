@@ -1,0 +1,20 @@
+{
+  "app_name": "Family Tracker",
+  "login": "Yingira",
+  "logout": "Vamu",
+  "register": "Tondawo akawunti",
+  "email": "Ebaruwa y'ekyama",
+  "password": "Ekigambo ky'okuyingira",
+  "name": "Erinnya lyonna",
+  "add_todo": "Yongera omulimu",
+  "todo_placeholder": "Kiki ekyetaagisa okukolebwa?",
+  "no_todos": "Tewali mirimu kaakano. Yongera ekimu waggulu!",
+  "delete": "Sazaamu",
+  "mark_done": "Kiraga nti kikoleddwa",
+  "mark_undone": "Kiraga nti tekikolebwa",
+  "greeting": "Gyebale ko, {{name}}",
+  "error_empty_title": "Tafuna mutwe gw'omulimu.",
+  "loading": "Kitwala ekiseera...",
+  "error_invalid_email": "Yingiza email entuufu.",
+  "task_created": "Omulimu guwandiikiddwa bulungi."
+}
