@@ -24,6 +24,7 @@ export async function getAssignableFamilyMembers(userId: string) {
 export async function addTodo(userId: string, data: {
   title: string;
   description?: string;
+  status?: string;
   dueDate?: string;
   assignedToUserId?: string;
 }) {
@@ -55,6 +56,7 @@ export async function addTodo(userId: string, data: {
   return insertTodo(userId, {
     title: data.title.trim(),
     description: data.description?.trim() || undefined,
+    status: data.status ?? "unoccupied",
     dueDate: dueDate ?? null,
     assignedToUserId: data.assignedToUserId ?? null,
     familyId: user.familyId,
