@@ -3,31 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verify Email - Family Tracker</title>
+  <title>Verify Account - Family Tracker</title>
   <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body class="min-h-screen flex items-center justify-center bg-[#e8e2d9] p-5 font-sans">
-  <div class="w-full max-w-md bg-[#f5f1ec] rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-8">
-    <h1 class="font-serif text-2xl text-[#2c2420] mb-3">Verify your email</h1>
-    <p id="message" class="text-sm text-[#5a4e46]">Checking your verification link...</p>
-    <a href="/pages/login.html" class="inline-block mt-4 text-[#5a4038] underline">Back to login</a>
+  <div class="w-full max-w-[420px] bg-[#f5f1ec] rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-8 text-[#2c2420]">
+    <h1 class="font-serif text-2xl mb-3">Account verification is no longer required</h1>
+    <p class="text-sm text-[#5a4e46] mb-6">You can log in right away after registration.</p>
+    <a href="/pages/login.html" class="inline-flex px-4 py-2 rounded-md bg-[#3d3530] text-[#f5f1ec] no-underline">Go to Login</a>
   </div>
-  <script type="module">
-    const message = document.getElementById("message");
-    const token = new URLSearchParams(location.search).get("token");
-    if (!token) {
-      message.textContent = "Verification token is missing.";
-    } else {
-      fetch(`/api/auth/verify?token=${encodeURIComponent(token)}`, { credentials: "include" })
-        .then(async (res) => {
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error || "Unable to verify email.");
-          message.textContent = data.message || "Email verified successfully.";
-        })
-        .catch((err) => {
-          message.textContent = err.message;
-        });
-    }
-  </script>
 </body>
 </html>
