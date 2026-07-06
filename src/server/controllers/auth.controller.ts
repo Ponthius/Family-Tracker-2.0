@@ -6,6 +6,7 @@ import {
   registerUser,
   resendVerification,
   updateBranding,
+  updateUserProfile,
   verifyUserEmail,
 } from "../services/auth.service.js";
 
@@ -23,6 +24,7 @@ export async function register(req: Request, res: Response, next: NextFunction) 
       user: { 
         id: user.id, 
         username: user.username, 
+        fullName: user.fullName,
         email: user.email,
         role: user.role,
         familyId: user.familyId,
@@ -45,6 +47,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
       user: { 
         id: user.id, 
         username: user.username, 
+        fullName: user.fullName,
         email: user.email,
         role: user.role,
         familyId: user.familyId,
@@ -63,6 +66,7 @@ export async function me(req: Request, res: Response, next: NextFunction) {
       user: { 
         id: user.id, 
         username: user.username, 
+        fullName: user.fullName,
         email: user.email,
         role: user.role,
         familyId: user.familyId,
@@ -92,6 +96,7 @@ export async function verify(req: Request, res: Response, next: NextFunction) {
       user: {
         id: user.id,
         username: user.username,
+        fullName: user.fullName,
         email: user.email,
         role: user.role,
         familyId: user.familyId,
@@ -112,6 +117,7 @@ export async function resendVerificationEmail(req: Request, res: Response, next:
       user: {
         id: user.id,
         username: user.username,
+        fullName: user.fullName,
         email: user.email,
         emailVerified: user.emailVerified,
       },
@@ -136,9 +142,25 @@ export async function deleteMe(req: Request, res: Response, next: NextFunction) 
 
 export async function updateFamilyBranding(req: Request, res: Response, next: NextFunction) {
   try {
-    const { familyName, logoUrl } = req.body as { familyName?: string; logoUrl?: string };
-    const family = await updateBranding(req.session.userId!, familyName ?? "", logoUrl);
+    const { familyName, logoUrl, accentColor } = req.body as { familyName?: string; logoUrl?: string; accentColor?: string };
+    const family = await updateBranding(req.session.userId!, familyName ?? "", logoUrl, accentColor);
     res.json({ family });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function updateProfile(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { username, fullName, language, currentPassword, newPassword } = req.body as {
+      username?: string;
+      fullName?: string;
+      language?: string;
+      currentPassword?: string;
+      newPassword?: string;
+    };
+    const user = await updateUserProfile(req.session.userId!, { username, fullName, language, currentPassword, newPassword });
+    res.json({ user: { id: user.id, username: user.username, fullName: user.fullName, email: user.email, role: user.role, language: user.language } });
   } catch (err) {
     next(err);
   }
