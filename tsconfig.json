@@ -1,15 +1,15 @@
 {
-  "compilerOptions": {
+    "compilerOptions": {
     "target": "ES2022",
-    "module": "Node16",
-    "moduleResolution": "node16",
-    "outDir": "./dist",
-    "rootDir": "./src/server",
+    "module": "ESNext",
     "strict": true,
+    "lib": ["ESNext", "DOM", "ES2021"],
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
-  },
-  "include": ["src/server/**/*"],
-  "exclude": ["node_modules", "dist", "public"]
-}
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "bundler",
+    "outDir": "./dist",
+    "rootDir": "./src"
+   },
+    "include": ["src/**/*"]
+     }
