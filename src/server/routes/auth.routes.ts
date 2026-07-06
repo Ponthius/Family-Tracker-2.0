@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteMe, login, logout, me, register, resendVerificationEmail, updateFamilyBranding, verify } from "../controllers/auth.controller.js";
+import { deleteMe, login, logout, me, register, resendVerificationEmail, updateFamilyBranding, updateProfile, verify } from "../controllers/auth.controller.js";
 import { requireAuth, requireGuest } from "../middlewares/requireAuth.js";
 
 export const authRouter = Router();
@@ -27,3 +27,6 @@ authRouter.delete("/me", requireAuth, deleteMe);
 
 // PATCH /api/auth/branding
 authRouter.patch("/branding", requireAuth, updateFamilyBranding);
+
+// PATCH /api/auth/profile
+authRouter.patch("/profile", requireAuth, updateProfile);
