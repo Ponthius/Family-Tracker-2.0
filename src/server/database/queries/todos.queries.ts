@@ -26,11 +26,18 @@ export function findTodoById(id: string) {
 export function insertTodo(userId: string, data: {
   title: string;
   description?: string;
+  status?: string;
   dueDate?: Date | null;
   assignedToUserId?: string | null;
   familyId?: string | null;
 }) {
-  return prisma.todo.create({ data: { userId, ...data } });
+  return prisma.todo.create({
+    data: { userId, ...data },
+    include: {
+      user: { select: { id: true, username: true, role: true } },
+      assignedToUser: { select: { id: true, username: true, role: true } },
+    },
+  } as never);
 }
 
 export function updateTodoById(
