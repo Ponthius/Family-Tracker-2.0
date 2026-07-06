@@ -15,9 +15,8 @@ import {
   markFamilyDeleted,
   updateFamilyById,
 } from "../database/queries/families.queries.js";
+import { prisma } from "../database/client.js";
 import { hashPassword, verifyPassword } from "../utils/hash.js";
-import { createToken } from "../utils/tokens.js";
-import { sendVerificationEmail } from "./email.service.js";
 import { AppError } from "../utils/errors.js";
 import { logAction } from "./audit.service.js";
 
@@ -51,9 +50,6 @@ export async function registerUser(username: string, email: string, password: st
 
   // Hash password
   const hashed = await hashPassword(password);
-  const verificationToken = createToken();
-  const verificationTokenExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
   // Create family group
   const family = await createFamily({ name: familyName });
 
@@ -64,15 +60,8 @@ export async function registerUser(username: string, email: string, password: st
     password: hashed,
     role: "Admin",
     familyId: family.id,
-    emailVerified: false,
-    verificationToken,
-    verificationTokenExpiresAt,
+    emailVerified: true,
   });
-
-  const verificationLink = buildVerificationLink(verificationToken);
-  sendVerificationEmail(user.email, user.username, verificationLink).catch((err) =>
-    console.error("Verification email failed:", err),
-  );
 
   void logAction({
     action: "user.registered",
@@ -82,7 +71,7 @@ export async function registerUser(username: string, email: string, password: st
     metadata: { verificationEnabled: Boolean(process.env["EMAIL_ENABLED"] === "true") },
   });
 
-  return { user, verificationLink: !process.env["EMAIL_ENABLED"] || process.env["EMAIL_ENABLED"] === "false" ? verificationLink : null };
+  return { user, verificationLink: null };
 }
 
 export async function loginUser(identifier: string, password: string) {
@@ -104,10 +93,6 @@ export async function loginUser(identifier: string, password: string) {
     throw new AppError(401, "Invalid email or password.");
   }
 
-  if (!user.emailVerified) {
-    throw new AppError(401, "Please verify your email address before logging in.");
-  }
-
   void logAction({
     action: "user.logged_in",
     actorUserId: user.id,
@@ -121,9 +106,7 @@ export async function loginUser(identifier: string, password: string) {
 export async function verifyUserEmail(token: string) {
   if (!token) throw new AppError(400, "Verification token is required.");
   const user = await findUserByVerificationToken(token);
-  if (!user || !user.verificationTokenExpiresAt || user.verificationTokenExpiresAt.getTime() < Date.now()) {
-    throw new AppError(400, "Verification link is invalid or expired.");
-  }
+  if (!user) throw new AppError(400, "Verification link is invalid or expired.");
   const verified = await clearVerificationToken(user.id);
   void logAction({ action: "user.verified", actorUserId: verified.id, familyId: verified.familyId, targetUserId: verified.id });
   return verified;
@@ -132,13 +115,7 @@ export async function verifyUserEmail(token: string) {
 export async function resendVerification(identifier: string) {
   const user = (await findUserByEmail(identifier)) ?? (await findUserByUsername(identifier));
   if (!user) throw new AppError(404, "Account not found.");
-  if (user.emailVerified) return user;
-  const verificationToken = createToken();
-  const verificationTokenExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-  const updated = await updateUserById(user.id, { verificationToken, verificationTokenExpiresAt });
-  sendVerificationEmail(updated.email, updated.username, buildVerificationLink(verificationToken)).catch(() => undefined);
-  void logAction({ action: "user.verification_resent", actorUserId: updated.id, familyId: updated.familyId, targetUserId: updated.id });
-  return updated;
+  return user;
 }
 
 export async function deleteAccount(userId: string) {
@@ -160,7 +137,40 @@ export async function deleteAccount(userId: string) {
   return { deletedAt, purgeAt, familyId: user.familyId, role: user.role };
 }
 
-export async function updateBranding(userId: string, familyName: string, logoUrl?: string) {
+export async function updateUserProfile(userId: string, data: { username?: string; fullName?: string; language?: string; currentPassword?: string; newPassword?: string }) {
+  const user = await findActiveUserById(userId);
+  if (!user) throw new AppError(404, "Account not found.");
+
+  const update: Record<string, unknown> = {};
+
+  if (data.username && data.username !== user.username) {
+    const existing = await findUserByUsername(data.username);
+    if (existing) throw new AppError(409, "Username is already taken.");
+    update.username = data.username;
+  }
+
+  if (typeof data.fullName === "string") {
+    update.fullName = data.fullName.trim() || null;
+  }
+
+  if (typeof data.language === "string" && data.language.trim()) {
+    update.language = data.language.trim();
+  }
+
+  if (data.currentPassword && data.newPassword) {
+    const valid = await verifyPassword(data.currentPassword, user.password);
+    if (!valid) throw new AppError(401, "Current password is incorrect.");
+    update.password = await hashPassword(data.newPassword);
+  }
+
+  if (Object.keys(update).length === 0) {
+    return user;
+  }
+
+  return updateUserById(userId, update);
+}
+
+export async function updateBranding(userId: string, familyName: string, logoUrl?: string, accentColor?: string) {
   const user = await findActiveUserById(userId);
   if (!user?.familyId) throw new AppError(404, "Family not found.");
   if (user.role !== "Admin") throw new AppError(403, "Only admins can update family branding.");
@@ -168,6 +178,7 @@ export async function updateBranding(userId: string, familyName: string, logoUrl
   return updateFamilyById(user.familyId, {
     name: familyName,
     logoUrl: logoUrl ?? null,
+    accentColor: accentColor ?? null,
   });
 }
 
@@ -175,4 +186,22 @@ export async function getCurrentUser(userId: string) {
   const user = await findActiveUserById(userId);
   if (!user) throw new AppError(401, "Not authenticated.");
   return user;
+}
+
+export async function ensureDefaultSuperAdmin() {
+  const email = "superadmin@gmail.com";
+  const existing = await findUserByEmail(email);
+  if (existing) return existing;
+
+  const password = await hashPassword("superadmin123");
+  return prisma.user.create({
+    data: {
+      username: "superadmin",
+      email,
+      password,
+      role: "SuperAdmin",
+      emailVerified: true,
+      language: "en",
+    },
+  });
 }
