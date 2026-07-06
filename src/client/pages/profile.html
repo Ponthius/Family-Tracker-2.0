@@ -2,37 +2,128 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Profile - Family Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="/styles/main.css">
+  <link rel="stylesheet" href="/styles/profile.css">
 </head>
-<body class="min-h-screen bg-[#e8e2d9] font-sans">
-  <main class="max-w-3xl mx-auto p-6">
-    <div class="bg-[#f5f1ec] rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-6 space-y-6">
-      <header>
-        <p class="text-sm text-[#8b7355] mb-1">Profile</p>
-        <h1 class="font-serif text-3xl text-[#2c2420]">Account and family settings</h1>
-      </header>
+<body class="profile-shell">
+  <div class="profile-layout">
+    <aside class="sidebar">
+      <div class="sidebar__brand">
+          <a href="/pages/dashboard.html" class="sidebar__brand-link">
+            <i class="fas fa-users"></i>
+            <span data-family-name>Family Tracker</span>
+          </a>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="/pages/dashboard.html" data-page="dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+        <a href="/pages/tasks.html" data-page="tasks"><i class="fas fa-calendar-alt"></i><span>Tasks</span></a>
+        <a href="/pages/members.html" data-page="members"><i class="fas fa-user-friends"></i><span>Members</span></a>
+        <a href="/pages/schedules.html" data-page="schedules"><i class="fas fa-clock"></i><span>Schedules</span></a>
+        <a href="/pages/profile.html" data-page="profile" class="is-active"><i class="fas fa-user-circle"></i><span>Profile</span></a>
+      </nav>
+    </aside>
 
-      <section class="grid gap-4">
-        <div id="messageBox" class="hidden rounded-lg border px-4 py-3 text-sm"></div>
+    <main class="profile-main">
+      <section class="profile-card">
+        <header class="profile-header">
+          <button class="profile-back" id="backBtn" type="button" aria-label="Go back">
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <div>
+            <p class="profile-eyebrow">Account Settings</p>
+            <h1>Profile</h1>
+          </div>
+          <button class="profile-theme" id="themeToggle" type="button" title="Toggle system mode">
+            <i class="fas fa-moon"></i>
+          </button>
+        </header>
+        <button id="logoutBtn" class="danger-btn" type="button" style="margin-bottom:12px;">Log Out</button>
 
-        <form id="brandingForm" class="grid gap-3">
-          <label class="text-sm text-[#5a4e46]">Family name</label>
-          <input id="familyName" class="rounded-md border border-[#c8bfb5] px-3 py-2 bg-[#faf8f5]" />
-          <label class="text-sm text-[#5a4e46]">Logo URL</label>
-          <input id="logoUrl" class="rounded-md border border-[#c8bfb5] px-3 py-2 bg-[#faf8f5]" placeholder="https://..." />
-          <button class="justify-self-start rounded-md bg-[#3d3530] px-4 py-2 text-[#f5f1ec]">Save branding</button>
-        </form>
+        <div id="successMsg" class="status status--success" hidden></div>
+        <div id="errorMsg" class="status status--error" hidden></div>
 
-        <div class="pt-4 border-t border-[#e0d6ce]">
-          <h2 class="font-serif text-xl text-[#2c2420] mb-2">Danger zone</h2>
-          <p class="text-sm text-[#7a6e66] mb-4">Delete your account. Your data is suspended for 7 days before permanent cleanup.</p>
-          <button id="deleteAccountBtn" class="rounded-md border border-[#a13d3d] px-4 py-2 text-[#a13d3d]">Delete account</button>
-        </div>
+        <section class="profile-section">
+          <h2>Personal Information</h2>
+          <div class="field">
+            <label for="username">Username</label>
+            <input id="username" type="text" placeholder="e.g. poel_admin">
+          </div>
+          <div class="field">
+            <label for="fullName">Full name</label>
+            <input id="fullName" type="text" placeholder="e.g. Ponthius Poel">
+          </div>
+          <div class="field">
+            <label for="email">Email address</label>
+            <input id="email" type="email" readonly>
+          </div>
+          <div class="field">
+            <label for="language">Interface language</label>
+            <select id="language">
+              <option value="en">English</option>
+              <option value="fr">French</option>
+              <option value="sw">Swahili</option>
+              <option value="lg">Luganda</option>
+              <option value="es">Spanish</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="profile-section">
+          <h2>Security & Credentials</h2>
+          <div class="field">
+            <label for="currentPassword">Current password</label>
+            <input id="currentPassword" type="password" placeholder="Enter current password">
+          </div>
+          <div class="field">
+            <label for="newPassword">New password</label>
+            <input id="newPassword" type="password" placeholder="Minimum 8 characters">
+          </div>
+          <div class="field">
+            <label for="confirmPassword">Confirm new password</label>
+            <input id="confirmPassword" type="password" placeholder="Re-enter your password">
+          </div>
+        </section>
+
+        <section class="profile-section">
+          <h2>Workspace Branding</h2>
+          <div class="field">
+            <label for="familyName">Family name</label>
+            <input id="familyName" type="text" placeholder="e.g. Smith Family">
+          </div>
+
+          <div class="logo-preview">
+            <div class="logo-preview__frame">
+              <i id="logoPlaceholder" class="fas fa-seedling"></i>
+              <img id="logoImage" alt="Brand preview" hidden>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="logoUrl">Logo URL</label>
+            <input id="logoUrl" type="url" placeholder="https://example.com/logo.png">
+          </div>
+          <div class="field">
+            <label for="accentColor">Accent color</label>
+            <div class="color-row">
+              <input id="accentColor" type="color" value="#8b7355">
+              <span id="colorCode">#8B7355</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="profile-section profile-section--danger">
+          <h2>Danger Zone</h2>
+          <p>This suspends your account immediately and removes it after the grace period.</p>
+          <button id="deleteAccountBtn" class="danger-btn" type="button">Delete Account</button>
+        </section>
+
+        <button id="saveBtn" class="save-btn" type="button">Save Settings</button>
       </section>
-    </div>
-  </main>
+    </main>
+  </div>
 
   <script type="module" src="/scripts/profile.js"></script>
 </body>
