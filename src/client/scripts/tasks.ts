@@ -1,14 +1,23 @@
 import { api } from "../lib/api.js";
 import { loadLanguage, t } from "../lib/i18n.js";
+import { loadBranding } from "../lib/branding.js";
 import { redirectIfGuest } from "../lib/session.js";
 
 redirectIfGuest();
 await loadLanguage();
+loadBranding().catch(() => undefined);
 
 type FamilyMember = {
   id: string;
   username: string;
   role: string;
+};
+
+type Schedule = {
+  title: string;
+  status: string;
+  dueDate?: string | null;
+  assignedToUser?: { id: string; username: string; role: string } | null;
 };
 
 type Task = {
@@ -42,6 +51,8 @@ const errTime = document.getElementById("errTime") as HTMLParagraphElement;
 
 let tasks: Task[] = [];
 let members: FamilyMember[] = [];
+let schedules: Schedule[] = [];
+let selectedDueDate: string | null = null;
 
 function show(el: HTMLElement): void {
   el.classList.remove("hidden");
@@ -87,10 +98,15 @@ function closeModal(): void {
   [errAssign, errName, errDate, errTime].forEach(hide);
 }
 
-function renderMembers() {
+function renderMembers(currentUserId?: string) {
+  const filtered = currentUserId ? members.filter((m) => m.id !== currentUserId) : members;
   assignRole.innerHTML =
     `<option value="">Select user</option>` +
-    members.map((member) => `<option value="${member.id}">${member.username} (${member.role})</option>`).join("");
+    filtered.map((member) => {
+      const schedule = selectedDueDate ? schedules.find((item) => item.assignedToUser?.id === member.id && item.dueDate?.startsWith(selectedDueDate ?? "")) : undefined;
+      const suffix = schedule ? ` - ${schedule.title} (${schedule.status})` : "";
+      return `<option value="${member.id}">${member.username} (${member.role})${suffix}</option>`;
+    }).join("");
 }
 
 function renderTable(list: Task[]): void {
@@ -133,13 +149,16 @@ function applySearch(): void {
 }
 
 async function loadData() {
-  const [tasksRes, membersRes] = await Promise.all([
+  const [tasksRes, membersRes, meRes, schedulesRes] = await Promise.all([
     api.get<{ todos: Task[] }>("/api/todos"),
     api.get<{ members: FamilyMember[] }>("/api/todos/members"),
+    api.get<{ user: { id: string } }>("/api/auth/me"),
+    api.get<{ schedules: Schedule[] }>("/api/family/schedules"),
   ]);
   tasks = tasksRes.todos;
   members = membersRes.members;
-  renderMembers();
+  schedules = schedulesRes.schedules ?? [];
+  renderMembers(meRes.user.id);
   renderTable(tasks);
 }
 
@@ -173,12 +192,14 @@ saveTaskBtn.addEventListener("click", async () => {
   if (!valid) return;
 
   const dueDate = `${taskDate.value}T${taskTime.value}`;
+  selectedDueDate = taskDate.value;
 
   try {
     const created = await api.post<{ todo: Task }>("/api/todos", {
       title: taskName.value.trim(),
       description: taskDesc.value.trim(),
       dueDate,
+      status: "task",
       assignedToUserId: assignRole.value,
     });
     tasks = [created.todo, ...tasks];
