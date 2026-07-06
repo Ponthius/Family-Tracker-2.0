@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Members - Family Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body class="bg-[#e8e2d9] font-sans min-h-screen">
+
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <aside class="w-[280px] bg-[#f5f1ec] shadow-[2px_0_12px_rgba(0,0,0,0.04)] flex flex-col sticky top-0 h-screen border-r border-[#e0d6ce] hidden md:flex">
+    <div class="px-6 pt-8 pb-6 border-b border-[#e2d8d0]">
+      <a href="/pages/dashboard.html" class="flex items-center gap-3 font-serif text-2xl font-bold text-[#5a4038] no-underline">
+        <i class="fas fa-users text-[1.7rem] text-[#8b7355]"></i>
+        <span data-family-name>Family Tracker</span>
+      </a>
+    </div>
+    <div class="flex-1 py-8 px-4 flex flex-col gap-2">
+      <a href="/pages/dashboard.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="dashboard">
+        <i class="fas fa-tachometer-alt w-6 text-xl text-[#7b6b5f]"></i><span>Dashboard</span>
+      </a>
+      <a href="/pages/tasks.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="tasks">
+        <i class="fas fa-calendar-alt w-6 text-xl text-[#7b6b5f]"></i><span>Tasks</span>
+      </a>
+      <a href="/pages/members.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium bg-[#3d3530] text-[#f5f1ec] transition-all cursor-pointer no-underline" data-page="members">
+        <i class="fas fa-user-friends w-6 text-xl text-[#f5f1ec]"></i><span>Members</span>
+      </a>
+      <a href="/pages/schedules.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="schedules">
+        <i class="fas fa-clock w-6 text-xl text-[#7b6b5f]"></i><span>Schedules</span>
+      </a>
+      <a href="/pages/profile.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="profile">
+        <i class="fas fa-user-circle w-6 text-xl text-[#7b6b5f]"></i><span>Profile</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex-1 p-7 bg-[#ede7e0] pb-20 md:pb-7">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-3xl font-semibold text-[#2c2420] font-serif">Members</h1>
+        <p class="text-[#7a6e66] text-sm mt-1">Manage your family members</p>
+      </div>
+      <button id="addMemberBtn" class="rounded-md bg-[#3d3530] text-[#f5f1ec] px-4 py-2 text-sm hover:bg-[#2c2420] transition-colors">
+        <i class="fas fa-plus mr-1"></i> Add Member
+      </button>
+    </div>
+
+    <!-- Message box -->
+    <div id="messageBox" class="hidden rounded-lg border px-4 py-3 text-sm mb-4"></div>
+
+    <!-- Members table -->
+    <div class="bg-[#f5f1ec] rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-6">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-[#e0d6ce] text-left">
+              <th class="pb-3 font-semibold text-[#5a4e46]">Role</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]">Username</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]">Email</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]">Status</th>
+            </tr>
+          </thead>
+          <tbody id="membersBody">
+            <tr><td colspan="4" class="py-8 text-center text-[#9b8a7a]">Loading members...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div id="addModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+      <div class="bg-[#f5f1ec] rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.18)] p-6 w-full max-w-md mx-4">
+        <h2 class="font-serif text-xl text-[#2c2420] mb-4">Add Family Member</h2>
+        <form id="addMemberForm" class="flex flex-col gap-3">
+          <label class="text-sm text-[#5a4e46]">Username</label>
+          <input id="newUsername" required class="rounded-md border border-[#c8bfb5] px-3 py-2 bg-[#faf8f5] text-[#2c2420] outline-none focus:border-[#8b7355]">
+          <label class="text-sm text-[#5a4e46]">Email</label>
+          <input id="newEmail" type="email" required class="rounded-md border border-[#c8bfb5] px-3 py-2 bg-[#faf8f5] text-[#2c2420] outline-none focus:border-[#8b7355]">
+          <label class="text-sm text-[#5a4e46]">Password</label>
+          <input id="newPassword" type="password" required minlength="6" class="rounded-md border border-[#c8bfb5] px-3 py-2 bg-[#faf8f5] text-[#2c2420] outline-none focus:border-[#8b7355]">
+          <label class="text-sm text-[#5a4e46]">Role</label>
+          <select id="newRole" class="rounded-md border border-[#c8bfb5] px-3 py-2 bg-[#faf8f5] text-[#2c2420] outline-none focus:border-[#8b7355]">
+            <option value="Member">Member</option>
+            <option value="Admin">Admin</option>
+          </select>
+          <div class="flex justify-end gap-3 mt-2">
+            <button type="button" id="cancelAddBtn" class="px-4 py-2 rounded-md border border-[#c8bfb5] text-[#5a4e46] hover:bg-[#e8e0d8] transition-colors">Cancel</button>
+            <button type="submit" class="px-4 py-2 rounded-md bg-[#3d3530] text-[#f5f1ec] hover:bg-[#2c2420] transition-colors">Add Member</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script type="module" src="/scripts/members.js"></script>
+</body>
+</html>
