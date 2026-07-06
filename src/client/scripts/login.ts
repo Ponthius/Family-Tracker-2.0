@@ -4,6 +4,7 @@
 // ─────────────────────────────────────────────
 
 import { loadLanguage, t } from "../lib/i18n.js";
+import { api } from "../lib/api.js";
 import { redirectIfLoggedIn } from "../lib/session.js";
 
 redirectIfLoggedIn();
@@ -38,23 +39,14 @@ form.addEventListener("submit", async (e: SubmitEvent) => {
   }
 
   try {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      showError(data.error || "Invalid username or password.");
-      return;
-    }
-
-    // Store user info for UI use
+    const data = await api.post<{ user: { role?: string } }>("/api/auth/login", { username, password });
     localStorage.setItem("user", JSON.stringify(data.user));
-    window.location.href = "/pages/dashboard.html";
-  } catch {
-    showError("Unable to reach the server. Please try again.");
+    const me = await api.get<{ user: { family?: { name?: string | null; logoUrl?: string | null; accentColor?: string | null }; language?: string | null } }>("/api/auth/me");
+    localStorage.setItem("familyBranding", JSON.stringify(me.user.family ?? {}));
+    localStorage.setItem("language", me.user.language || "en");
+
+    window.location.href = data.user.role === "SuperAdmin" ? "/pages/super-admin.html" : "/pages/dashboard.html";
+  } catch (err) {
+    showError(err instanceof Error ? err.message : "Unable to reach the server. Please try again.");
   }
 });
