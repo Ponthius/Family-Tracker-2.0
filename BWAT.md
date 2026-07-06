@@ -16,7 +16,8 @@ This file provides guidance to Bwat when working with code in this repository.
 - **Frontend**: Pure HTML + Tailwind CSS 3 + TypeScript compiled by esbuild
 - **Dev runner**: tsx (runs TypeScript server without compilation)
 - **Dev parallelism**: concurrently
-- **Test runner**: Node.js built-in (`node:test`)
+- **Test runner**: tsx --test (Node.js built-in test runner via tsx)
+- **Task scheduling**: node-cron (cleanup cron jobs)
 
 ## Brand Identity
 
@@ -48,9 +49,13 @@ This file provides guidance to Bwat when working with code in this repository.
 model Family {
   id        String   @id @default(cuid())
   name      String
+  logoUrl   String?
+  deletedAt DateTime?
+  purgeAt   DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   members   User[]
+  todos     Todo[]
 }
 
 model User {
@@ -60,20 +65,42 @@ model User {
   password  String
   role      String   @default("Member")  // "Admin" or "Member"
   language  String   @default("en")
+  emailVerified Boolean @default(false)
+  verificationToken String? @unique
+  verificationTokenExpiresAt DateTime?
+  deletedAt DateTime?
+  purgeAt   DateTime?
   createdAt DateTime @default(now())
   familyId  String?
   family    Family?  @relation(fields: [familyId], references: [id], onDelete: SetNull)
   todos     Todo[]
+  assignedTodos Todo[] @relation("TodoAssignee")
 }
 
 model Todo {
   id        String   @id @default(cuid())
   title     String
+  description String?
   done      Boolean  @default(false)
+  dueDate   DateTime?
+  assignedToUserId String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignedToUser User? @relation("TodoAssignee", fields: [assignedToUserId], references: [id], onDelete: SetNull)
+  familyId  String?
+  family    Family? @relation(fields: [familyId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id           String   @id @default(cuid())
+  action       String
+  actorUserId  String?
+  familyId     String?
+  targetUserId String?
+  metadata     String?
+  createdAt    DateTime @default(now())
 }
 ```
 
@@ -82,21 +109,21 @@ model Todo {
 Build toward these:
 
 1. **Family as a tenant** — Registration creates a `Family` + `User` (Admin role). All members scoped to `familyId`.
-2. **Auth** — Register with username + email + password (bcryptjs, 12 rounds). Login by username or email. Session-based (express-session). `requireGuest` middleware on auth pages.
-3. **Roles** — Admin can invite/manage members. Members can view schedules and manage their own tasks. Super admin exists above all tenants.
+2. **Auth** — Register with username + email + password (bcryptjs, 12 rounds). Login by username or email. Session-based (express-session). `requireGuest` middleware on auth pages. Email verification flow.
+3. **Roles** — Admin can add/manage members. Members can view schedules and manage their own tasks. Super admin exists above all tenants.
 4. **Schedules** — Every user has a schedule. Family members can see each others' schedules (today, tomorrow, this week, last week, next month, last month, next year, last year). Schedule conflicts flagged when creating tasks.
-5. **Tasks / Events** — CRUD for tasks and events. Tasks belong to a user and are visible to the family. Completed tasks go to a done/recent list. Ownership checks on every mutation.
-6. **Dashboard** — KPI cards (pending tasks count, members count, upcoming events), recent tasks list, upcoming tasks list. Greeting with family name.
+5. **Tasks / Events** — CRUD for tasks with assignment to family members. Tasks belong to a family and are visible to all members. Completed tasks go to a done/recent list. Ownership checks on every mutation.
+6. **Dashboard** — KPI cards (pending tasks count, members count, upcoming events), recent tasks list, upcoming tasks list. Greeting with family name. Real data from family API.
 7. **White labelling** — Family can upload a logo, set a family name displayed in the dashboard header. Tenant-scoped.
 8. **Multi-language** — Client-side i18n (JSON files). Five languages: EN, SW (Kiswahili), LG (Luganda), FR (Français), ES (Español). Language stored in `localStorage` and `families.language` column.
-9. **Account deletion with 7-day grace** — Soft-delete with `DeletedAccounts` table. Admin deletion cascades to all family members. Regular deletion only removes own data.
-10. **Invitations** — Admin invites members via email. Token-based invitation links with expiry.
-11. **Super admin** — Seeded account (`superadmin@gmail.com`). Manages all tenants. Excluded from all regular queries (`WHERE is_super_admin = FALSE`).
-12. **Audit logging** — Every significant action writes to `audit_logs`. Family admin can view logs with filters.
-13. **Cron jobs** — Automated tasks via `node-cron`: clean up expired `DeletedAccounts`, send task reminders.
+9. **Account deletion with 7-day grace** — Soft-delete with `deletedAt`/`purgeAt` on User and Family models. Admin deletion cascades to all family members. Regular deletion only removes own data. node-cron job cleans up expired purges.
+10. **Invitations** — Admin adds members directly via family API (username, email, password, role). Token-based email invitation flow also scaffolded.
+11. **Super admin** — Managed via `role: "SuperAdmin"`. Can view all tenants with member counts. Has dedicated audit pages. Excluded from regular queries.
+12. **Audit logging** — Every significant action writes to `AuditLog` table. Family admin can view logs with filters. Super admin sees all.
+13. **Cron jobs** — Automated tasks via `node-cron`: clean up expired user/family deletions, send task reminders.
 14. **Confirmation modals** — Every destructive action has a confirmation modal. For permanent actions, require typing a confirmation phrase.
 15. **Inline messages** — No `alert()` calls. Error/success messages are inline or use a toast/notification component.
-16. **Breadcrumbs + Sidebar** — Navigation breadcrumbs on every page. Sidebar with main navigation. Header with family name + user info + language selector + logout.
+16. **Sidebar navigation** — Sidebar with main navigation (Dashboard, Tasks, Members, Schedules, Invite, Profile). Header with family name + user info + language selector + logout.
 
 ## Coding Conventions
 
@@ -112,25 +139,59 @@ Build toward these:
 - **Validation middleware**: `validate(schema)` returns an Express middleware that runs `ZodSchema.safeParse(req.body)` and returns `400 { error: "Validation failed", errors: [...] }` on failure. Validated data replaces `req.body`.
 - **Comments**: Every module file has a JSDoc comment describing its purpose. Keep them current.
 - **Login accepts username or email**: The login controller/service try email first, then username lookup. The login page sends `{ username, password }`. Do NOT change this to email-only.
+- **Test runner**: Use `tsx --test` instead of bare `node --test` to handle TypeScript files. Tests are in `tests/server/`.
 
 ## Architecture Notes
 
-**Backend structure** follows strict layers: `routes/` -> `controllers/` -> `services/` -> `database/queries/` -> Prisma -> PostgreSQL. Middleware (`requireAuth`, `validate`) sits between route and controller. The `AppError` class (with `statusCode`) is thrown in services and caught by the global `errorHandler` — every response is JSON. Each domain (auth, todos, dashboard, families, members, tasks, events, schedules) gets its own route/controller/service/query chain.
+**Backend structure** follows strict layers: `routes/` -> `controllers/` -> `services/` -> `database/queries/` -> Prisma -> PostgreSQL. Middleware (`requireAuth`, `validate`) sits between route and controller. The `AppError` class (with `statusCode`) is thrown in services and caught by the global `errorHandler` — every response is JSON. Each domain (auth, todos, dashboard, families, members, tasks, events, schedules, audit) gets its own route/controller/service/query chain.
 
-**Multi-tenancy** is implemented through `family_id` on every user. The admin creates a `families` row on registration. Invited members are linked to the same `family_id`. All tenant-scoped queries filter by `family_id`.
+**Multi-tenancy** is implemented through `family_id` on every user. The admin creates a `families` row on registration. Added members are linked to the same `family_id`. Tasks are scoped to `family_id`. All tenant-scoped queries filter by `family_id`.
 
-**Auth flow** — Session-based. On login/register, `req.session.userId` is set to the user's ID. The browser sends the `connect.sid` cookie automatically. Login accepts both username and email lookup. Session expires after 7 days of inactivity. Session store is in-memory in dev; production must use `connect-pg-simple`.
+**Auth flow** — Session-based. On login/register, `req.session.userId` is set to the user's ID. The browser sends the `connect.sid` cookie automatically. Login accepts both username and email lookup. Session expires after 7 days of inactivity. Session store is in-memory in dev.
 
-**Frontend** has no framework. Each page has an HTML shell in `src/client/pages/` and a corresponding TypeScript entry point in `src/client/scripts/`. esbuild bundles each entry point into a single `.js` file in `public/scripts/`. Components are functions that create and return DOM elements. The build script also copies `pages/` and `locales/` to `public/`.
+**Email verification** — On register, a `verificationToken` + expiry is stored on the User. The `email.service.ts` sends a verification link. The `/api/auth/verify` endpoint validates the token and sets `emailVerified = true`. Resend endpoint available.
 
-**Build pipeline** (`npm run dev`): runs three concurrent watchers — `tsx watch` for the server, `tailwindcss --watch` for CSS (CDN version used on login/register/tasks pages), and `scripts/build-client.mjs --watch` (esbuild) for client JS.
+**Account deletion** — Soft-delete with `deletedAt` + `purgeAt` (7 days). `cleanup.service.ts` cron checks for expired purges and permanently removes records. Admin deletion cascades to family members.
+
+**Audit logging** — `audit.service.ts` writes to `AuditLog` on key actions (login, register, task create/delete, account delete). `GET /api/audit/family` returns family-scoped logs. Super admin sees all via `GET /api/audit/all`.
+
+**Family management** — `family.routes.ts` provides `/api/family/overview` (dashboard data), `/api/family/members` (list/add), `/api/family/schedules`. All protected by `requireAuth`.
+
+**Frontend** has no framework. Each page has an HTML shell in `src/client/pages/` and a corresponding TypeScript entry point in `src/client/scripts/`. esbuild bundles each entry point into a single `.js` file in `public/scripts/`. Components are functions that create and return DOM elements.
+
+**Build pipeline** (`npm run dev`): runs three concurrent watchers — `tsx watch` for the server, `tailwindcss --watch` for CSS, and `node scripts/build-client.mjs --watch` (esbuild) for client JS. Use compiled `/styles/main.css` (NOT Tailwind CDN).
+
+## API Routes
+
+| Method | Path | Auth | Purpose |
+|---|---|---|---|
+| POST | /api/auth/register | requireGuest | Register + create family |
+| POST | /api/auth/login | requireGuest | Login (username or email) |
+| GET | /api/auth/me | requireAuth | Current user info |
+| POST | /api/auth/logout | requireAuth | Destroy session |
+| POST | /api/auth/verify | Public | Email verification |
+| POST | /api/auth/resend-verification | Public | Resend verification email |
+| GET | /api/family/overview | requireAuth | Dashboard stats + members |
+| GET | /api/family/members | requireAuth | List family members |
+| POST | /api/family/members | requireAuth | Add family member (Admin only) |
+| GET | /api/family/schedules | requireAuth | Family schedules |
+| GET | /api/todos | requireAuth | List tasks |
+| POST | /api/todos | requireAuth | Create task |
+| PATCH | /api/todos/:id | requireAuth | Update task |
+| DELETE | /api/todos/:id | requireAuth | Delete task |
+| GET | /api/todos/members | requireAuth | Family members for task assignment |
+| GET | /api/dashboard/stats | requireAuth | KPI stats |
+| GET | /api/dashboard/recent-tasks | requireAuth | Recent completed tasks |
+| GET | /api/dashboard/upcoming-tasks | requireAuth | Upcoming tasks |
+| GET | /api/audit/family | requireAuth | Family audit logs |
+| GET | /api/audit/all | requireAuth | All audit logs (Super Admin only) |
 
 ## Commands
 
 - `npm run dev` — Start all dev watchers in parallel (server + CSS + JS)
 - `npm run build` — Build CSS (minified) and client JS (minified) for production
 - `npm run typecheck` — Type-check both server and client
-- `npm test` — Run tests with Node's built-in test runner
+- `npm test` — Run tests with `tsx --test`
 - `npm run db:migrate` — Apply Prisma migrations
 - `npm run db:generate` — Regenerate Prisma client
 - `npm run db:studio` — Open Prisma Studio
@@ -139,17 +200,21 @@ Build toward these:
 ## Gotchas
 
 - **`.env` is required**: Copy `.env.example` to `.env` and fill in real values before the server starts. `env.ts` fails hard on missing variables.
-- **PostgreSQL is required**: This project uses a Prisma Pooled DB URL. Ensure the connection works before running.
+- **PostgreSQL is required**: Uses a Prisma Pooled DB URL from `DATABASE_URL`. No dev.db file is used. Prisma client must be regenerated after schema changes.
 - **Never edit `public/`**: Auto-generated by `npm run dev` and `npm run build`. Edits there are overwritten.
 - **`.js` extensions in `.ts` files**: All module imports use `.js` extension (e.g. `from "../config/env.js"`) because Node's ESM resolver requires it when running via `tsx`.
 - **Two tsconfig files**: `tsconfig.json` for server (Node16), `tsconfig.client.json` for client (ESNext/bundler + DOM lib). `npm run typecheck` runs both.
-- **Email is fire-and-forget**: Welcome/verification emails are called with `.catch()` — never block registration if SMTP fails.
+- **Email is fire-and-forget**: Welcome/verification/invite emails called with `.catch()` — never block if SMTP fails.
 - **Session store is in-memory**: Do NOT deploy to production without swapping to `connect-pg-simple` or similar.
 - **Login accepts username OR email**: The login controller tries email first, falls back to username. The login page sends `{ username, password }`. Register page sends `{ username, email, password, familyName }`.
-- **Registration creates a Family + Admin user**: The first user to register creates a family group and is assigned the Admin role automatically.
-- **Ownership checks**: Every task/event mutation must verify ownership. Touching data belonging to another user returns 404 (not 403 — hides existence).
-- **Some pages use Tailwind CDN**: login.html, register.html, tasks.html use `<script src="https://cdn.tailwindcss.com"></script>` instead of the compiled `public/styles/main.css`. Keep this consistent.
-- **No `alert()` calls anywhere**: All user-facing messages must use inline error/success elements.
-- **Warm earthy palette uses hardcoded hex values**: The `#e8e2d9` / `#f5f1ec` / `#3d3530` palette is applied via inline Tailwind classes or `style` attributes. Do not mix with indigo/gray Tailwind classes from the old Todo scaffold.
-- **`family_id` scoping**: All data queries must filter by the user's `family_id`. A user should never see data from another family.
-- **Delete orphan reschedule files**: `src/client/pages/reschedule/` is orphan code from an earlier branch. Do NOT recreate it if deleted. The build script will copy whatever is in `src/client/pages/` to `public/pages/`.
+- **Registration creates a Family + Admin user**: The first user creates a family group and is assigned the Admin role.
+- **Admin can add family members**: Via `POST /api/family/members` with username, email, password, role. No invitation email needed for MVP.
+- **Ownership checks**: Every task mutation verifies `family_id` scope. Touching data from another family returns 404.
+- **Account deletion is soft**: Sets `deletedAt` + `purgeAt` (7 days). `node-cron` in `cleanup.service.ts` permanently removes expired records. Cron runs every hour.
+- **Source maps disabled in build**: `scripts/build-client.mjs` sets `sourcemap: false` to prevent CDN/extension conflicts.
+- **No Tailwind CDN**: Use compiled `/styles/main.css` on all pages. Do NOT add `<script src="https://cdn.tailwindcss.com"></script>`.
+- **No `alert()` calls**: All messages use inline error/success elements.
+- **Warm earthy palette uses hardcoded hex values**: `#e8e2d9` / `#f5f1ec` / `#3d3530` via Tailwind arbitrary value classes.
+- **`family_id` scoping**: All data queries filter by `family_id`. A user never sees data from another family.
+- **Super admin**: Has `role: "SuperAdmin"`. Excluded from regular queries. Sees all tenants in audit/super-admin pages.
+- **Audit log**: Written for login, register, task create/update/delete, account delete. Family admin sees family-scoped logs.
