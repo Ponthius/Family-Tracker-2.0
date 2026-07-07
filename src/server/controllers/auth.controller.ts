@@ -43,16 +43,26 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     const identifier = email ?? username ?? "";
     const user = await loginUser(identifier, password);
     req.session.userId = user.id;
-    res.json({ 
-      user: { 
-        id: user.id, 
-        username: user.username, 
-        fullName: user.fullName,
-        email: user.email,
-        role: user.role,
-        familyId: user.familyId,
-        emailVerified: user.emailVerified,
-      },
+    // ensure session is persisted before sending the response so the
+    // Set-Cookie header is reliably received by the client
+    req.session.save((err) => {
+      if (err) return next(err);
+      // Debug: log session contents so we can verify the session was stored
+      try {
+        // eslint-disable-next-line no-console
+        console.log('login: session saved', { id: req.session.id, session: req.session });
+      } catch {}
+      res.json({
+        user: {
+          id: user.id,
+          username: user.username,
+          fullName: user.fullName,
+          email: user.email,
+          role: user.role,
+          familyId: user.familyId,
+          emailVerified: user.emailVerified,
+        },
+      });
     });
   } catch (err) {
     next(err);
