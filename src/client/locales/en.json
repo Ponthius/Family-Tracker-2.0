@@ -16,4 +16,16 @@
   "error_empty_title": "Please enter a todo title.",
   "loading": "Loading…",
   "error_invalid_email": "Please enter a valid email address.",
+  "nav_title": "Profile Settings",
+  "section_profile": "Edit Profile",
+  "section_password": "Edit Password",
+  "field_username": "Username",
+  "field_fullname": "Full Name",
+  "field_email": "Email Address",
+  "field_current_pass": "Current Password",
+  "field_new_pass": "New Password",
+  "field_confirm_pass": "Confirm New Password",
+  "field_app_lang": "Application Language",
+  "btn_save": "Save Changes",
+  "messages_success": "Profile settings saved successfully!"
 }
