@@ -554,6 +554,25 @@ video {
   display: none;
 }
 
+:root {
+  --bg-main: #e8e2d9;
+  --bg-surface: #f5f1ec;
+  --bg-panel: #fefaf5;
+  --bg-muted: #ede7e0;
+  --border-ui: #c8bfb5;
+  --text-main: #2c2420;
+  --text-muted: #7a6e66;
+  --shadow-ui: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+body.dark-mode .profile-shell,
+  body.dark-mode .profile-layout,
+  body.dark-mode .profile-card,
+  body.dark-mode .sidebar,
+  body.dark-mode .profile-main {
+  background-color: #181412 !important;
+}
+
 .\!container {
   width: 100% !important;
 }
