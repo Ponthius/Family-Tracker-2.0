@@ -21,14 +21,19 @@ type AuditLog = {
   familyId?: string | null;
 };
 
-const tenantsBody = document.getElementById("tenantsBody") as HTMLTableSectionElement;
-const auditBody = document.getElementById("auditTableBody") as HTMLTableSectionElement;
-const messageBox = document.getElementById("messageBox") as HTMLDivElement;
-const totalFamilies = document.getElementById("totalFamilies") as HTMLSpanElement;
-const totalMembers = document.getElementById("totalMembers") as HTMLSpanElement;
-const activeFamilies = document.getElementById("activeFamilies") as HTMLSpanElement;
+const familyTableBody = document.getElementById("familyTableBody") as HTMLTableSectionElement | null;
+const auditBody = document.getElementById("auditTableBody") as HTMLTableSectionElement | null;
+const messageBox = document.getElementById("messageBox") as HTMLDivElement | null;
+const totalFamilies = document.getElementById("totalFamilies") as HTMLSpanElement | null;
+const totalMembers = document.getElementById("totalMembers") as HTMLSpanElement | null;
+const activeFamilies = document.getElementById("activeFamilies") as HTMLSpanElement | null;
 
 function showMessage(message: string) {
+  if (!messageBox) {
+    console.error(message);
+    return;
+  }
+
   messageBox.textContent = message;
   messageBox.classList.remove("hidden");
 }
@@ -38,10 +43,22 @@ async function loadTenants() {
   if (!res.ok) throw new Error("Failed to load tenants.");
   const data = await res.json();
   const tenants: Tenant[] = data.tenants || [];
-  totalFamilies.textContent = String(tenants.length);
-  totalMembers.textContent = String(tenants.reduce((sum, tenant) => sum + (tenant.memberCount || 0), 0));
-  activeFamilies.textContent = String(tenants.filter((tenant) => !tenant.deletedAt).length);
-  tenantsBody.innerHTML = tenants.map((tenant) => {
+
+  if (totalFamilies) {
+    totalFamilies.textContent = String(tenants.length);
+  }
+  if (totalMembers) {
+    totalMembers.textContent = String(tenants.reduce((sum, tenant) => sum + (tenant.memberCount || 0), 0));
+  }
+  if (activeFamilies) {
+    activeFamilies.textContent = String(tenants.filter((tenant) => !tenant.deletedAt).length);
+  }
+
+  if (!familyTableBody) {
+    return;
+  }
+
+  familyTableBody.innerHTML = tenants.map((tenant) => {
     const created = new Date(tenant.createdAt).toLocaleDateString();
     const status = tenant.deletedAt
       ? '<span class="bg-[#fceeee] text-[#a13d3d] text-xs px-2 py-0.5 rounded">Deleted</span>'
@@ -62,6 +79,7 @@ async function loadAuditLogs() {
   if (!res.ok) throw new Error("Failed to load audit logs.");
   const data = await res.json();
   const logs: AuditLog[] = data.logs || [];
+  if (!auditBody) return;
   auditBody.innerHTML = logs.map((log) => {
     const date = new Date(log.createdAt);
     return `<tr class="border-b border-[#e0d6ce]">
