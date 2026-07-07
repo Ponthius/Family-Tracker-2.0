@@ -103,13 +103,17 @@ async function loadGlobalSettings() {
 await loadGlobalSettings().catch(() => void 0);
 await loadLanguage();
 applyTranslations();
-var tenantsBody = document.getElementById("tenantsBody");
+var familyTableBody = document.getElementById("familyTableBody");
 var auditBody = document.getElementById("auditTableBody");
 var messageBox = document.getElementById("messageBox");
 var totalFamilies = document.getElementById("totalFamilies");
 var totalMembers = document.getElementById("totalMembers");
 var activeFamilies = document.getElementById("activeFamilies");
 function showMessage(message) {
+  if (!messageBox) {
+    console.error(message);
+    return;
+  }
   messageBox.textContent = message;
   messageBox.classList.remove("hidden");
 }
@@ -118,10 +122,19 @@ async function loadTenants() {
   if (!res.ok) throw new Error("Failed to load tenants.");
   const data = await res.json();
   const tenants = data.tenants || [];
-  totalFamilies.textContent = String(tenants.length);
-  totalMembers.textContent = String(tenants.reduce((sum, tenant) => sum + (tenant.memberCount || 0), 0));
-  activeFamilies.textContent = String(tenants.filter((tenant) => !tenant.deletedAt).length);
-  tenantsBody.innerHTML = tenants.map((tenant) => {
+  if (totalFamilies) {
+    totalFamilies.textContent = String(tenants.length);
+  }
+  if (totalMembers) {
+    totalMembers.textContent = String(tenants.reduce((sum, tenant) => sum + (tenant.memberCount || 0), 0));
+  }
+  if (activeFamilies) {
+    activeFamilies.textContent = String(tenants.filter((tenant) => !tenant.deletedAt).length);
+  }
+  if (!familyTableBody) {
+    return;
+  }
+  familyTableBody.innerHTML = tenants.map((tenant) => {
     const created = new Date(tenant.createdAt).toLocaleDateString();
     const status = tenant.deletedAt ? '<span class="bg-[#fceeee] text-[#a13d3d] text-xs px-2 py-0.5 rounded">Deleted</span>' : '<span class="bg-[#e7efe2] text-[#3c5a3c] text-xs px-2 py-0.5 rounded">Active</span>';
     return `<tr class="border-b border-[#e0d6ce]">
@@ -139,6 +152,7 @@ async function loadAuditLogs() {
   if (!res.ok) throw new Error("Failed to load audit logs.");
   const data = await res.json();
   const logs = data.logs || [];
+  if (!auditBody) return;
   auditBody.innerHTML = logs.map((log) => {
     const date = new Date(log.createdAt);
     return `<tr class="border-b border-[#e0d6ce]">
