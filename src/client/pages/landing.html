@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Family Tracker App - Keep Your Family Organized</title>
+    <!-- CHANGED: was landing-page.css, now points to the shared Tailwind build -->
+    <link rel="stylesheet" href="/styles/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+    />
+  </head>
+
+  <!-- CHANGED: body font + bg + text color now as Tailwind classes -->
+  <body class="font-body bg-bg text-app-text leading-relaxed">
+    <!-- NAV -->
+    <nav class="sticky top-0 z-[100] bg-bg/90 backdrop-blur-md border-b border-border">
+      <div class="max-w-app mx-auto px-8 h-16 flex items-center justify-between">
+        <a href="#" class="flex items-center gap-2">
+          <span class="text-2xl">🏠</span>
+          <span class="font-display text-xl font-bold text-primary">Family Tracker App</span>
+        </a>
+        <div class="flex items-center gap-8">
+          <!-- Hidden below 600px, just like your old media query -->
+          <a href="#features" class="hidden sm:inline text-[0.95rem] font-medium text-muted hover:text-primary transition-colors">Features</a>
+          <a href="#about" class="hidden sm:inline text-[0.95rem] font-medium text-muted hover:text-primary transition-colors">About</a>
+          <a href="signin.html" class="px-[1.1rem] py-[0.45rem] border-2 border-primary rounded-lg text-primary font-semibold hover:bg-primary hover:text-white transition-colors">Sign In</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="max-w-app mx-auto px-8 sm:px-5 pt-20 sm:pt-12 pb-12 sm:pb-8">
+      <div class="max-w-[680px]">
+        <p class="text-sm font-semibold tracking-[0.1em] uppercase text-accent mb-4">Your Family, Always Organized</p>
+        <h1 class="font-display text-[clamp(2.4rem,5vw,3.6rem)] font-bold leading-[1.15] mb-5">
+          Keep Your Family<br />On Track, Always
+        </h1>
+        <p class="text-lg text-muted max-w-[540px] mb-9">
+          Assign tasks, track schedules, and stay ready for anything — all in
+          one place for your family. Built for heads of the family who need
+          things done.
+        </p>
+        <div class="flex flex-wrap gap-4 sm:flex-col">
+          <a href="get-started.html" class="inline-block px-7 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-dark hover:-translate-y-px transition-all text-center">
+            Get Started — It's Free
+          </a>
+          <a href="signin.html" class="inline-block px-7 py-3 bg-transparent text-primary font-semibold border-2 border-primary rounded-xl hover:bg-primary hover:text-white transition-colors text-center">
+            Sign In
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="bg-surface border-y border-border py-20 px-8" id="features">
+      <div class="max-w-app mx-auto">
+        <h2 class="font-display text-[clamp(1.6rem,3vw,2.2rem)] font-bold text-center mb-12">
+          Everything your family needs
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="p-8 px-6 border border-border rounded-xl bg-bg hover:shadow-[0_6px_24px_rgba(46,107,79,0.1)] hover:-translate-y-1 transition-all">
+            <div class="text-3xl mb-4">✅</div>
+            <h3 class="font-display text-lg font-bold mb-2">Task Assignment</h3>
+            <p class="text-[0.95rem] text-muted leading-relaxed">
+              The head of the family can assign tasks to any member instantly —
+              perfect for emergencies and daily routines.
+            </p>
+          </div>
+          <div class="p-8 px-6 border border-border rounded-xl bg-bg hover:shadow-[0_6px_24px_rgba(46,107,79,0.1)] hover:-translate-y-1 transition-all">
+            <div class="text-3xl mb-4">📅</div>
+            <h3 class="font-display text-lg font-bold mb-2">Family Schedules</h3>
+            <p class="text-[0.95rem] text-muted leading-relaxed">
+              Keep track of everyone's plans and activities in one shared view.
+              Never let anything slip through the cracks.
+            </p>
+          </div>
+          <div class="p-8 px-6 border border-border rounded-xl bg-bg hover:shadow-[0_6px_24px_rgba(46,107,79,0.1)] hover:-translate-y-1 transition-all">
+            <div class="text-3xl mb-4">🚨</div>
+            <h3 class="font-display text-lg font-bold mb-2">Emergency Mode</h3>
+            <p class="text-[0.95rem] text-muted leading-relaxed">
+              When things need to happen now, alert your family and assign
+              urgent tasks on the spot — no delays.
+            </p>
+          </div>
+          <div class="p-8 px-6 border border-border rounded-xl bg-bg hover:shadow-[0_6px_24px_rgba(46,107,79,0.1)] hover:-translate-y-1 transition-all">
+            <div class="text-3xl mb-4">🏷️</div>
+            <h3 class="font-display text-lg font-bold mb-2">Family Identity</h3>
+            <p class="text-[0.95rem] text-muted leading-relaxed">
+              Add your family name, upload a logo, and make the app truly yours.
+              Every family gets their own space.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA STRIP -->
+    <section class="py-20 px-8 text-center bg-primary text-white">
+      <h2 class="font-display text-[clamp(1.6rem,3vw,2.2rem)] mb-3">Ready to take charge of your family?</h2>
+      <p class="text-[1.05rem] opacity-85 mb-8">
+        Join families already using Family Tracker App to stay organized and
+        connected.
+      </p>
+      <!-- CHANGED: this button overrides the default btn-primary colors, so we use accent bg + dark text directly -->
+      <a href="get-started.html" class="inline-block px-7 py-3 bg-accent text-app-text font-semibold rounded-xl hover:bg-[#d4903c] transition-colors">
+        Get Started Free
+      </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-8 text-center text-sm text-muted border-t border-border">
+      <p>&copy; 2026 Family Tracker App. Built for families who get things done.</p>
+    </footer>
+  </body>
+</html>
