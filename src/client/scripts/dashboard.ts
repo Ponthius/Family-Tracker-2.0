@@ -1,3 +1,10 @@
+import { applyTranslations, loadLanguage } from "../lib/i18n.js";
+import { loadGlobalSettings } from "../lib/settings.js";
+
+await loadGlobalSettings().catch(() => undefined);
+await loadLanguage();
+applyTranslations();
+
 const API = '/api';
 
 let isOnline = navigator.onLine;
@@ -44,7 +51,6 @@ const path = window.location.pathname;
 const currentPage = path.split('/').pop()?.replace('.html', '') || 'dashboard';
 setActiveNavItem(currentPage);
 updateUserGreeting();
-loadBranding().catch(() => undefined);
 
 const hamburger = document.getElementById('hamburgerBtn');
 const overlay = document.getElementById('mobileSidebarOverlay');
@@ -166,4 +172,3 @@ function showNotification(message: string, type: string = 'info') {
 loadKPIs();
 loadRecentTasks();
 loadUpcomingTasks();
-import { loadBranding } from "../lib/branding.js";

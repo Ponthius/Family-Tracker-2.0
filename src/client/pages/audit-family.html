@@ -14,14 +14,14 @@
     <!-- Topbar -->
     <div class="text-center">
       <h1 class="font-serif text-[1.6rem] font-bold text-[#2c2420]">Family Tracker</h1>
-      <p class="text-[0.9rem] text-[#7a6e66] mt-1">Audit Log — Family Admin</p>
+      <p class="text-[0.9rem] text-[#7a6e66] mt-1" data-i18n="audit_log_family_admin">Audit Log — Family Admin</p>
     </div>
 
     <!-- Audit Log Panel -->
     <div class="bg-[#f5f1ec] rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-6 flex flex-col gap-4">
 
       <div class="flex flex-wrap items-center justify-between gap-3">
-        <h2 class="font-serif text-[1.05rem] font-bold text-[#2c2420]" id="auditPanelTitle">Family Audit Log</h2>
+        <h2 class="font-serif text-[1.05rem] font-bold text-[#2c2420]" id="auditPanelTitle" data-i18n="family_audit_log">Family Audit Log</h2>
       </div>
 
       <!-- Filters -->
@@ -30,49 +30,51 @@
           type="text"
           id="filterSearch"
           placeholder="Search username or action..."
+          data-i18n-placeholder="search_username_or_action"
           class="flex-[2] min-w-[180px] px-3 py-[9px] border border-[#c8bfb5] rounded-md
                  bg-[#faf8f5] text-[0.88rem] text-[#2c2420] outline-none
                  focus:border-[#8b7355] transition-colors"
         >
         <select id="filterRole" class="flex-1 min-w-[130px] px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5] text-[0.88rem] text-[#2c2420] outline-none focus:border-[#8b7355] transition-colors">
-          <option value="">All Roles</option>
+          <option value="" data-i18n="all_roles">All Roles</option>
           <option value="family_admin">Family Admin</option>
           <option value="father">Father</option>
           <option value="mother">Mother</option>
           <option value="child">Child</option>
         </select>
         <select id="filterAction" class="flex-1 min-w-[150px] px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5] text-[0.88rem] text-[#2c2420] outline-none focus:border-[#8b7355] transition-colors">
-          <option value="">All Actions</option>
-          <option value="Login">Login</option>
-          <option value="Logout">Logout</option>
-          <option value="Register">Register</option>
-          <option value="Task Created">Task Created</option>
-          <option value="Task Assigned">Task Assigned</option>
-          <option value="Task Deleted">Task Deleted</option>
-          <option value="Event Created">Event Created</option>
-          <option value="Event Rescheduled">Event Rescheduled</option>
-          <option value="Profile Updated">Profile Updated</option>
-          <option value="Password Changed">Password Changed</option>
-          <option value="Account Deleted">Account Deleted</option>
-          <option value="Account Recovery">Account Recovery</option>
-          <option value="Member Invited">Member Invited</option>
-          <option value="Language Changed">Language Changed</option>
-          <option value="Failed Login">Failed Login</option>
+          <option value="" data-i18n="all_actions">All Actions</option>
+          <option value="Login" data-i18n="action_login">Login</option>
+          <option value="Logout" data-i18n="action_logout">Logout</option>
+          <option value="Register" data-i18n="action_register">Register</option>
+          <option value="Task Created" data-i18n="action_task_created">Task Created</option>
+          <option value="Task Assigned" data-i18n="action_task_assigned">Task Assigned</option>
+          <option value="Task Deleted" data-i18n="action_task_deleted">Task Deleted</option>
+          <option value="Event Created" data-i18n="action_event_created">Event Created</option>
+          <option value="Event Rescheduled" data-i18n="action_event_rescheduled">Event Rescheduled</option>
+          <option value="Profile Updated" data-i18n="action_profile_updated">Profile Updated</option>
+          <option value="Password Changed" data-i18n="action_password_changed">Password Changed</option>
+          <option value="Account Deleted" data-i18n="action_account_deleted">Account Deleted</option>
+          <option value="Account Recovery" data-i18n="action_account_recovery">Account Recovery</option>
+          <option value="Member Invited" data-i18n="action_member_invited">Member Invited</option>
+          <option value="Language Changed" data-i18n="action_language_changed">Language Changed</option>
+          <option value="Failed Login" data-i18n="action_failed_login">Failed Login</option>
         </select>
         <select id="filterStatus" class="flex-1 min-w-[130px] px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5] text-[0.88rem] text-[#2c2420] outline-none focus:border-[#8b7355] transition-colors">
-          <option value="">All Statuses</option>
-          <option value="Success">Success</option>
-          <option value="Failed">Failed</option>
+          <option value="" data-i18n="all_statuses">All Statuses</option>
+          <option value="Success" data-i18n="status_success">Success</option>
+          <option value="Failed" data-i18n="status_failed">Failed</option>
         </select>
         <div class="flex items-center gap-2 flex-wrap">
           <input type="date" id="filterDateFrom" class="px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5] text-[0.88rem] text-[#2c2420] outline-none focus:border-[#8b7355] transition-colors min-w-[130px]">
-          <span class="text-[0.82rem] text-[#7a6e66]">to</span>
+          <span class="text-[0.82rem] text-[#7a6e66]" data-i18n="to">to</span>
           <input type="date" id="filterDateTo" class="px-3 py-[9px] border border-[#c8bfb5] rounded-md bg-[#faf8f5] text-[0.88rem] text-[#2c2420] outline-none focus:border-[#8b7355] transition-colors min-w-[130px]">
         </div>
         <button
           id="clearFilterBtn"
           class="px-4 py-[9px] bg-transparent text-[#5a4e46] border border-[#c8bfb5]
                  rounded-md text-[0.88rem] cursor-pointer hover:bg-[#ece6dd] transition-colors whitespace-nowrap"
+          data-i18n="clear_filters"
         >
           Clear Filters
         </button>
@@ -83,17 +85,17 @@
         <table class="w-full border-collapse text-[0.86rem]">
           <thead>
             <tr>
-              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap">Username</th>
-              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap">Role</th>
-              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap">Action</th>
-              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap">Date</th>
-              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap">Time</th>
-              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap">Status</th>
+              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap" data-i18n="username">Username</th>
+              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap" data-i18n="role">Role</th>
+              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap" data-i18n="action">Action</th>
+              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap" data-i18n="date">Date</th>
+              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap" data-i18n="time">Time</th>
+              <th class="text-left px-3 py-[10px] bg-[#ece6dd] text-[#5a4e46] font-bold border-b border-[#c8bfb5] whitespace-nowrap" data-i18n="status">Status</th>
             </tr>
           </thead>
           <tbody id="auditTableBody"></tbody>
         </table>
-        <p id="noAudit" class="hidden text-center text-[#7a6e66] text-[0.9rem] py-6">No audit records found.</p>
+        <p id="noAudit" class="hidden text-center text-[#7a6e66] text-[0.9rem] py-6" data-i18n="no_audit_records">No audit records found.</p>
       </div>
 
       <!-- Pagination -->
@@ -101,7 +103,7 @@
     </div>
 
   </div>
-
+  <script type="module" src="/scripts/audit-family.js"></script>
   <script>
   "use strict";
   document.addEventListener("DOMContentLoaded", () => {

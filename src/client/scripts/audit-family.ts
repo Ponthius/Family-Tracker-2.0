@@ -1,4 +1,9 @@
-import { loadBranding } from "../lib/branding.js";
+import { applyTranslations, loadLanguage } from "../lib/i18n.js";
+import { loadGlobalSettings } from "../lib/settings.js";
+
+await loadGlobalSettings().catch(() => undefined);
+await loadLanguage();
+applyTranslations();
 
 type AuditLog = {
   action: string;
@@ -53,7 +58,6 @@ clearFilterBtn.addEventListener("click", () => {
   render();
 });
 
-loadBranding().catch(() => undefined);
 load().catch(() => {
   auditTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-[#7a6e66] py-4">Failed to load audit logs.</td></tr>`;
 });

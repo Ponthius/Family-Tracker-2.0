@@ -1,10 +1,13 @@
-import { loadLanguage, t } from "../lib/i18n.js";
+import { applyTranslations, loadLanguage, t } from "../lib/i18n.js";
 import { api } from "../lib/api.js";
 import { redirectIfLoggedIn } from "../lib/session.js";
+import { loadGlobalSettings } from "../lib/settings.js";
 
 redirectIfLoggedIn();
 
+await loadGlobalSettings().catch(() => undefined);
 await loadLanguage();
+applyTranslations();
 
 const form = document.getElementById("registerForm") as HTMLFormElement;
 const errorBox = document.getElementById("errorMsg") as HTMLParagraphElement;

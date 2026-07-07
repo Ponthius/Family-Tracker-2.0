@@ -1,7 +1,9 @@
-// ─────────────────────────────────────────────
-//  Family Tracker — Super Admin Dashboard
-//  super-admin.ts
-// ─────────────────────────────────────────────
+import { applyTranslations, loadLanguage } from "../lib/i18n.js";
+import { loadGlobalSettings } from "../lib/settings.js";
+
+await loadGlobalSettings().catch(() => undefined);
+await loadLanguage();
+applyTranslations();
 
 const API = "/api";
 const tenantsBody = document.getElementById("tenantsBody") as HTMLTableSectionElement;
@@ -22,18 +24,14 @@ function showMessage(msg: string, kind: "success" | "error" = "error") {
 
 async function loadTenants() {
   try {
-    const res = await fetch(`${API}/family/tenants`);
+    const res = await fetch(`${API}/family/tenants`, { credentials: "include" });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error);
 
     const tenants = data.tenants || [];
-
-    // Stats
     totalFamilies.textContent = String(tenants.length);
-    const memberCount = tenants.reduce((sum: number, t: any) => sum + (t.memberCount || 0), 0);
-    totalMembers.textContent = String(memberCount);
-    const active = tenants.filter((t: any) => !t.deletedAt).length;
-    activeFamilies.textContent = String(active);
+    totalMembers.textContent = String(tenants.reduce((sum: number, t: any) => sum + (t.memberCount || 0), 0));
+    activeFamilies.textContent = String(tenants.filter((t: any) => !t.deletedAt).length);
 
     if (tenants.length === 0) {
       tenantsBody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-[#9b8a7a]">No families registered yet.</td></tr>';
@@ -61,5 +59,3 @@ async function loadTenants() {
 }
 
 loadTenants();
-loadBranding().catch(() => undefined);
-import { loadBranding } from "../lib/branding.js";

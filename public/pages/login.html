@@ -10,14 +10,14 @@
 
   <div class="w-full max-w-[360px] bg-[#f5f1ec] rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-8 px-7 flex flex-col gap-[6px]">
 
-    <h1 class="font-serif text-center text-[#2c2420] text-[1.4rem] font-bold mb-3">
+    <h1 class="font-serif text-center text-[#2c2420] text-[1.4rem] font-bold mb-3" data-i18n="app_name">
       Family Tracker
     </h1>
 
     <p id="errorMsg" class="hidden text-[#a13d3d] text-[0.8rem] text-center -mt-1 mb-1"></p>
 
     <form id="loginForm" class="flex flex-col gap-[6px]">
-      <label for="username" class="text-[0.82rem] text-[#5a4e46] mt-[10px]">Username</label>
+      <label for="username" class="text-[0.82rem] text-[#5a4e46] mt-[10px]" data-i18n="username">Username</label>
       <input
         type="text"
         id="username"
@@ -27,7 +27,7 @@
                focus:border-[#8b7355] transition-colors"
       >
 
-      <label for="password" class="text-[0.82rem] text-[#5a4e46] mt-[10px]">Password</label>
+      <label for="password" class="text-[0.82rem] text-[#5a4e46] mt-[10px]" data-i18n="password">Password</label>
       <input
         type="password"
         id="password"
@@ -42,6 +42,7 @@
         class="mt-5 py-[11px] rounded-md bg-[#3d3530] text-[#f5f1ec]
                text-[0.95rem] tracking-wide cursor-pointer
                hover:bg-[#2c2420] transition-colors"
+        data-i18n="login"
       >
         Log In
       </button>
@@ -49,7 +50,7 @@
 
     <p class="text-center text-[0.8rem] text-[#7a6e66] mt-[6px]">
       Don't have an account?
-      <a href="register.html" class="text-[#5a4038] hover:underline">Register</a>
+      <a href="register.html" class="text-[#5a4038] hover:underline" data-i18n="register">Register</a>
     </p>
 
   </div>

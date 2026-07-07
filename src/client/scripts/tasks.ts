@@ -1,11 +1,12 @@
 import { api } from "../lib/api.js";
-import { loadLanguage, t } from "../lib/i18n.js";
-import { loadBranding } from "../lib/branding.js";
+import { applyTranslations, loadLanguage, t } from "../lib/i18n.js";
+import { loadGlobalSettings } from "../lib/settings.js";
 import { redirectIfGuest } from "../lib/session.js";
 
 redirectIfGuest();
+await loadGlobalSettings().catch(() => undefined);
 await loadLanguage();
-loadBranding().catch(() => undefined);
+applyTranslations();
 
 type FamilyMember = {
   id: string;

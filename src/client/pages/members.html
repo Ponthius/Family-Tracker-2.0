@@ -20,19 +20,19 @@
     </div>
     <div class="flex-1 py-8 px-4 flex flex-col gap-2">
       <a href="/pages/dashboard.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="dashboard">
-        <i class="fas fa-tachometer-alt w-6 text-xl text-[#7b6b5f]"></i><span>Dashboard</span>
+        <i class="fas fa-tachometer-alt w-6 text-xl text-[#7b6b5f]"></i><span data-i18n="dashboard">Dashboard</span>
       </a>
       <a href="/pages/tasks.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="tasks">
-        <i class="fas fa-calendar-alt w-6 text-xl text-[#7b6b5f]"></i><span>Tasks</span>
+        <i class="fas fa-calendar-alt w-6 text-xl text-[#7b6b5f]"></i><span data-i18n="tasks">Tasks</span>
       </a>
       <a href="/pages/members.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium bg-[#3d3530] text-[#f5f1ec] transition-all cursor-pointer no-underline" data-page="members">
-        <i class="fas fa-user-friends w-6 text-xl text-[#f5f1ec]"></i><span>Members</span>
+        <i class="fas fa-user-friends w-6 text-xl text-[#f5f1ec]"></i><span data-i18n="members">Members</span>
       </a>
       <a href="/pages/schedules.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="schedules">
-        <i class="fas fa-clock w-6 text-xl text-[#7b6b5f]"></i><span>Schedules</span>
+        <i class="fas fa-clock w-6 text-xl text-[#7b6b5f]"></i><span data-i18n="schedules">Schedules</span>
       </a>
       <a href="/pages/profile.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="profile">
-        <i class="fas fa-user-circle w-6 text-xl text-[#7b6b5f]"></i><span>Profile</span>
+        <i class="fas fa-user-circle w-6 text-xl text-[#7b6b5f]"></i><span data-i18n="profile">Profile</span>
       </a>
     </div>
   </aside>
@@ -43,11 +43,11 @@
     <!-- Header -->
     <div class="flex items-center justify-between mb-8">
       <div>
-        <h1 class="text-3xl font-semibold text-[#2c2420] font-serif">Members</h1>
-        <p class="text-[#7a6e66] text-sm mt-1">Manage your family members</p>
+        <h1 class="text-3xl font-semibold text-[#2c2420] font-serif" data-i18n="members">Members</h1>
+        <p class="text-[#7a6e66] text-sm mt-1" data-i18n="manage_members">Manage your family members</p>
       </div>
       <button id="addMemberBtn" class="rounded-md bg-[#3d3530] text-[#f5f1ec] px-4 py-2 text-sm hover:bg-[#2c2420] transition-colors">
-        <i class="fas fa-plus mr-1"></i> Add Member
+        <i class="fas fa-plus mr-1"></i> <span data-i18n="add_member">Add Member</span>
       </button>
     </div>
 
@@ -60,14 +60,14 @@
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b border-[#e0d6ce] text-left">
-              <th class="pb-3 font-semibold text-[#5a4e46]">Role</th>
-              <th class="pb-3 font-semibold text-[#5a4e46]">Username</th>
-              <th class="pb-3 font-semibold text-[#5a4e46]">Email</th>
-              <th class="pb-3 font-semibold text-[#5a4e46]">Status</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]" data-i18n="role">Role</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]" data-i18n="username">Username</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]" data-i18n="email">Email</th>
+              <th class="pb-3 font-semibold text-[#5a4e46]" data-i18n="status">Status</th>
             </tr>
           </thead>
           <tbody id="membersBody">
-            <tr><td colspan="4" class="py-8 text-center text-[#9b8a7a]">Loading members...</td></tr>
+            <tr><td colspan="4" class="py-8 text-center text-[#9b8a7a]" data-i18n="loading_members">Loading members...</td></tr>
           </tbody>
         </table>
       </div>
@@ -76,22 +76,22 @@
     <!-- Add Member Modal -->
     <div id="addModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
       <div class="bg-[#f5f1ec] rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.18)] p-6 w-full max-w-md mx-4">
-        <h2 class="font-serif text-xl text-[#2c2420] mb-4">Add Family Member</h2>
+        <h2 class="font-serif text-xl text-[#2c2420] mb-4" data-i18n="add_family_member">Add Family Member</h2>
         <form id="addMemberForm" class="flex flex-col gap-3">
-          <label class="text-sm text-[#5a4e46]">Username</label>
+          <label class="text-sm text-[#5a4e46]" data-i18n="username">Username</label>
           <input id="newUsername" required class="rounded-md border border-[#c8bfb5] px-3 py-2 bg-[#faf8f5] text-[#2c2420] outline-none focus:border-[#8b7355]">
-          <label class="text-sm text-[#5a4e46]">Email</label>
+          <label class="text-sm text-[#5a4e46]" data-i18n="email">Email</label>
           <input id="newEmail" type="email" required class="rounded-md border border-[#c8bfb5] px-3 py-2 bg-[#faf8f5] text-[#2c2420] outline-none focus:border-[#8b7355]">
-          <label class="text-sm text-[#5a4e46]">Password</label>
+          <label class="text-sm text-[#5a4e46]" data-i18n="password">Password</label>
           <input id="newPassword" type="password" required minlength="6" class="rounded-md border border-[#c8bfb5] px-3 py-2 bg-[#faf8f5] text-[#2c2420] outline-none focus:border-[#8b7355]">
-          <label class="text-sm text-[#5a4e46]">Role</label>
+          <label class="text-sm text-[#5a4e46]" data-i18n="role">Role</label>
           <select id="newRole" class="rounded-md border border-[#c8bfb5] px-3 py-2 bg-[#faf8f5] text-[#2c2420] outline-none focus:border-[#8b7355]">
             <option value="Member">Member</option>
             <option value="Admin">Admin</option>
           </select>
           <div class="flex justify-end gap-3 mt-2">
-            <button type="button" id="cancelAddBtn" class="px-4 py-2 rounded-md border border-[#c8bfb5] text-[#5a4e46] hover:bg-[#e8e0d8] transition-colors">Cancel</button>
-            <button type="submit" class="px-4 py-2 rounded-md bg-[#3d3530] text-[#f5f1ec] hover:bg-[#2c2420] transition-colors">Add Member</button>
+            <button type="button" id="cancelAddBtn" class="px-4 py-2 rounded-md border border-[#c8bfb5] text-[#5a4e46] hover:bg-[#e8e0d8] transition-colors" data-i18n="cancel">Cancel</button>
+            <button type="submit" class="px-4 py-2 rounded-md bg-[#3d3530] text-[#f5f1ec] hover:bg-[#2c2420] transition-colors" data-i18n="add_member">Add Member</button>
           </div>
         </form>
       </div>

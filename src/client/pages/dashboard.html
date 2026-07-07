@@ -13,7 +13,7 @@
   <aside class="w-[280px] bg-[#f5f1ec] shadow-[2px_0_12px_rgba(0,0,0,0.04)] flex flex-col sticky top-0 h-screen border-r border-[#e0d6ce] transition-all duration-200 hidden md:flex">
     <div class="px-6 pt-8 pb-6 border-b border-[#e2d8d0]">
       <button id="myBackButton" class="w-full bg-transparent border border-[#dcdcdc] rounded-md px-3 py-2 cursor-pointer text-[0.85rem] text-[#555] mb-4 flex items-center gap-2 transition-colors hover:bg-[#f0f0f0]" aria-label="Go back">
-        <i class="fas fa-arrow-left"></i> <span>Back</span>
+        <i class="fas fa-arrow-left"></i> <span data-i18n="back">Back</span>
       </button>
       
       <a href="/pages/dashboard.html" class="flex items-center gap-3 font-serif text-2xl font-bold text-[#5a4038] no-underline">
@@ -23,19 +23,19 @@
     </div>
     <div class="flex-1 py-8 px-4 flex flex-col gap-2">
       <a href="/pages/dashboard.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline bg-[#3d3530] text-[#f5f1ec]" data-page="dashboard">
-        <i class="fas fa-tachometer-alt w-6 text-xl text-[#f5f1ec]"></i><span>Dashboard</span>
+        <i class="fas fa-tachometer-alt w-6 text-xl text-[#f5f1ec]"></i><span data-i18n="dashboard">Dashboard</span>
       </a>
       <a href="/pages/tasks.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="tasks">
-        <i class="fas fa-calendar-alt w-6 text-xl text-[#7b6b5f]"></i><span>Tasks</span>
+        <i class="fas fa-calendar-alt w-6 text-xl text-[#7b6b5f]"></i><span data-i18n="tasks">Tasks</span>
       </a>
       <a href="/pages/members.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="members">
-        <i class="fas fa-user-friends w-6 text-xl text-[#7b6b5f]"></i><span>Members</span>
+        <i class="fas fa-user-friends w-6 text-xl text-[#7b6b5f]"></i><span data-i18n="members">Members</span>
       </a>
       <a href="/pages/schedules.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="schedules">
-        <i class="fas fa-clock w-6 text-xl text-[#7b6b5f]"></i><span>Schedules</span>
+        <i class="fas fa-clock w-6 text-xl text-[#7b6b5f]"></i><span data-i18n="schedules">Schedules</span>
       </a>
       <a href="/pages/profile.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] transition-all cursor-pointer no-underline hover:bg-[#e8e0d8] hover:text-[#3d3530]" data-page="profile">
-        <i class="fas fa-user-circle w-6 text-xl text-[#7b6b5f]"></i><span>Profile</span>
+        <i class="fas fa-user-circle w-6 text-xl text-[#7b6b5f]"></i><span data-i18n="profile">Profile</span>
       </a>
     </div>
   </aside>
@@ -54,6 +54,7 @@
         </div>
         <a href="/pages/profile.html" class="bg-[#fefaf5] px-4 py-2 rounded-full flex items-center gap-3 shadow-sm border border-[#e0d6ce] cursor-pointer transition-colors hover:bg-[#e8e0d8] no-underline" id="profileBtn">
           <i class="fas fa-user-circle text-xl text-[#8b7355]"></i>
+          <span data-i18n="profile">Profile</span>
         </a>
         <button class="hidden md:hidden bg-[#fefaf5] border border-[#e0d6ce] rounded-full px-4 py-2.5 text-[1.3rem] text-[#5a4038] cursor-pointer transition-colors hover:bg-[#e8e0d8]" id="hamburgerBtn">
           <i class="fas fa-bars"></i>
@@ -106,14 +107,14 @@
       <div class="flex-1 bg-[#fdfaf7] rounded-3xl py-1.5 border border-[#ece2da] overflow-x-auto">
         <div class="text-[1.3rem] font-semibold font-serif text-[#2c2420] px-5 py-4 flex items-center gap-3 border-b-2 border-[#e2d8d0]">
           <i class="fas fa-history text-[#8b7355] text-xl"></i>
-          <span>Recent Tasks</span>
+          <span data-i18n="recent_tasks">Recent Tasks</span>
         </div>
         <table class="w-full border-collapse">
           <thead>
             <tr>
-              <th class="text-left px-5 py-3.5 font-semibold text-[#5f4f42] text-[0.8rem] tracking-wide bg-[#faf3ec]">Event name</th>
-              <th class="text-left px-5 py-3.5 font-semibold text-[#5f4f42] text-[0.8rem] tracking-wide bg-[#faf3ec]">Date</th>
-              <th class="text-left px-5 py-3.5 font-semibold text-[#5f4f42] text-[0.8rem] tracking-wide bg-[#faf3ec]">Status</th>
+              <th class="text-left px-5 py-3.5 font-semibold text-[#5f4f42] text-[0.8rem] tracking-wide bg-[#faf3ec]" data-i18n="event_name">Event name</th>
+              <th class="text-left px-5 py-3.5 font-semibold text-[#5f4f42] text-[0.8rem] tracking-wide bg-[#faf3ec]" data-i18n="date">Date</th>
+              <th class="text-left px-5 py-3.5 font-semibold text-[#5f4f42] text-[0.8rem] tracking-wide bg-[#faf3ec]" data-i18n="status">Status</th>
             </tr>
           </thead>
           <tbody id="recentEventsBody">
@@ -126,14 +127,14 @@
       <div class="flex-1 bg-[#fdfaf7] rounded-3xl py-1.5 border border-[#ece2da] overflow-x-auto">
         <div class="text-[1.3rem] font-semibold font-serif text-[#2c2420] px-5 py-4 flex items-center gap-3 border-b-2 border-[#e2d8d0]">
           <i class="fas fa-calendar-plus text-[#8b7355] text-xl"></i>
-          <span>Upcoming Tasks</span>
+          <span data-i18n="upcoming_tasks">Upcoming Tasks</span>
         </div>
         <table class="w-full border-collapse">
           <thead>
             <tr>
-              <th class="text-left px-5 py-3.5 font-semibold text-[#5f4f42] text-[0.8rem] tracking-wide bg-[#faf3ec]">Event name</th>
-              <th class="text-left px-5 py-3.5 font-semibold text-[#5f4f42] text-[0.8rem] tracking-wide bg-[#faf3ec]">Date & Time</th>
-              <th class="text-left px-5 py-3.5 font-semibold text-[#5f4f42] text-[0.8rem] tracking-wide bg-[#faf3ec]">Category</th>
+              <th class="text-left px-5 py-3.5 font-semibold text-[#5f4f42] text-[0.8rem] tracking-wide bg-[#faf3ec]" data-i18n="event_name">Event name</th>
+              <th class="text-left px-5 py-3.5 font-semibold text-[#5f4f42] text-[0.8rem] tracking-wide bg-[#faf3ec]" data-i18n="date_time">Date & Time</th>
+              <th class="text-left px-5 py-3.5 font-semibold text-[#5f4f42] text-[0.8rem] tracking-wide bg-[#faf3ec]" data-i18n="category">Category</th>
             </tr>
           </thead>
           <tbody id="upcomingEventsBody">
@@ -154,19 +155,19 @@
 
 <div class="md:hidden fixed bottom-0 left-0 right-0 bg-[#f5f1ec] flex justify-around px-4 py-2.5 border-t border-[#ddd2c8] z-[1000] backdrop-blur-sm shadow-[0_-2px_8px_rgba(0,0,0,0.05)]">
   <a href="/pages/dashboard.html" class="flex flex-col items-center text-xs text-[#3d3530] font-bold gap-1 cursor-pointer no-underline" data-page="dashboard">
-    <i class="fas fa-home text-xl"></i><span>Home</span>
+    <i class="fas fa-home text-xl"></i><span data-i18n="dashboard">Home</span>
   </a>
   <a href="/pages/tasks.html" class="flex flex-col items-center text-xs text-[#7b6b5f] gap-1 cursor-pointer no-underline" data-page="tasks">
-    <i class="fas fa-calendar-alt text-xl"></i><span>Tasks</span>
+    <i class="fas fa-calendar-alt text-xl"></i><span data-i18n="tasks">Tasks</span>
   </a>
   <a href="/pages/members.html" class="flex flex-col items-center text-xs text-[#7b6b5f] gap-1 cursor-pointer no-underline" data-page="members">
-    <i class="fas fa-users text-xl"></i><span>Members</span>
+    <i class="fas fa-users text-xl"></i><span data-i18n="members">Members</span>
   </a>
   <a href="/pages/schedules.html" class="flex flex-col items-center text-xs text-[#7b6b5f] gap-1 cursor-pointer no-underline" data-page="schedules">
-    <i class="fas fa-clock text-xl"></i><span>Schedules</span>
+    <i class="fas fa-clock text-xl"></i><span data-i18n="schedules">Schedules</span>
   </a>
   <a href="/pages/profile.html" class="flex flex-col items-center text-xs text-[#7b6b5f] gap-1 cursor-pointer no-underline" data-page="profile">
-    <i class="fas fa-user-circle text-xl"></i><span>Profile</span>
+    <i class="fas fa-user-circle text-xl"></i><span data-i18n="profile">Profile</span>
   </a>
 </div>
 
@@ -175,33 +176,33 @@
   <button class="absolute top-5 right-5 text-2xl bg-transparent border-0 text-[#5a4038] cursor-pointer" id="closeSidebarBtn"><i class="fas fa-times"></i></button>
   <div class="px-5 py-7 border-b border-[#e2d8d0]">
     <a href="/pages/dashboard.html" class="flex items-center gap-3 font-serif text-2xl font-bold text-[#5a4038] no-underline">
-      <i class="fas fa-users text-[1.7rem] text-[#8b7355]"></i><span>Family Tracker</span>
+      <i class="fas fa-users text-[1.7rem] text-[#8b7355]"></i><span data-i18n="app_name">Family Tracker</span>
     </a>
   </div>
   <div class="flex-1 py-6 px-4 flex flex-col gap-2">
     <a href="/pages/dashboard.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] cursor-pointer no-underline bg-[#3d3530] text-[#f5f1ec]" data-page="dashboard">
-      <i class="fas fa-tachometer-alt w-6"></i><span>Dashboard</span>
+      <i class="fas fa-tachometer-alt w-6"></i><span data-i18n="dashboard">Dashboard</span>
     </a>
     <a href="/pages/tasks.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] cursor-pointer no-underline" data-page="tasks">
-      <i class="fas fa-calendar-alt w-6"></i><span>Tasks</span>
+      <i class="fas fa-calendar-alt w-6"></i><span data-i18n="tasks">Tasks</span>
     </a>
     <a href="/pages/members.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] cursor-pointer no-underline" data-page="members">
-      <i class="fas fa-user-friends w-6"></i><span>Members</span>
+      <i class="fas fa-user-friends w-6"></i><span data-i18n="members">Members</span>
     </a>
     <a href="/pages/schedules.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] cursor-pointer no-underline" data-page="schedules">
-      <i class="fas fa-clock w-6"></i><span>Schedules</span>
+      <i class="fas fa-clock w-6"></i><span data-i18n="schedules">Schedules</span>
     </a>
     <a href="/pages/profile.html" class="flex items-center gap-3.5 px-4 py-3 rounded-[14px] text-base font-medium text-[#5a4e46] cursor-pointer no-underline" data-page="profile">
-      <i class="fas fa-user-circle w-6"></i><span>Profile</span>
+      <i class="fas fa-user-circle w-6"></i><span data-i18n="profile">Profile</span>
     </a>
   </div>
-  <div class="px-5 py-8 border-t border-[#e2d8d0] text-[0.85rem] text-[#8b7a6c] mt-auto"><i class="fas fa-user-circle"></i> Family Account</div>
+  <div class="px-5 py-8 border-t border-[#e2d8d0] text-[0.85rem] text-[#8b7a6c] mt-auto"><i class="fas fa-user-circle"></i> <span data-i18n="family_account">Family Account</span></div>
 </div>
 
 <div id="notification-container" class="fixed bottom-5 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full opacity-0 transition-opacity duration-500 z-[9999] text-white font-medium pointer-events-none">
     <span id="notification-message"></span>
 </div>
 
-<script src="/scripts/dashboard.js"></script>
+<script type="module" src="/scripts/dashboard.js"></script>
 </body>
 </html>

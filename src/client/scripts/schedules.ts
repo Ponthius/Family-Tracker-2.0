@@ -1,3 +1,10 @@
+import { applyTranslations, loadLanguage } from "../lib/i18n.js";
+import { loadGlobalSettings } from "../lib/settings.js";
+
+await loadGlobalSettings().catch(() => undefined);
+await loadLanguage();
+applyTranslations();
+
 const API = "/api";
 const schedulesBody = document.getElementById("schedulesBody") as HTMLTableSectionElement;
 const createScheduleBtn = document.getElementById("createScheduleBtn") as HTMLButtonElement;
@@ -51,7 +58,7 @@ function renderSchedules() {
 }
 
 async function loadSchedules() {
-  const res = await fetch(`${API}/family/schedules`);
+  const res = await fetch(`${API}/family/schedules`, { credentials: "include" });
   const data = await res.json();
   allSchedules = (data.schedules || []).filter((schedule: any) => schedule.status === "occupied" || schedule.status === "unoccupied");
   renderSchedules();
@@ -65,6 +72,7 @@ saveScheduleBtn.addEventListener("click", async () => {
   const dueDate = `${scheduleDate.value}T${scheduleTime.value}`;
   await fetch(`${API}/todos`, {
     method: "POST",
+    credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       title: scheduleTitle.value.trim(),
@@ -89,5 +97,3 @@ document.querySelectorAll(".schedule-filter").forEach((btn) => {
 });
 
 loadSchedules();
-loadBranding().catch(() => undefined);
-import { loadBranding } from "../lib/branding.js";

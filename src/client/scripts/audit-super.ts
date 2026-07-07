@@ -1,8 +1,14 @@
-import { loadBranding } from "../lib/branding.js";
+import { applyTranslations, loadLanguage } from "../lib/i18n.js";
+import { loadGlobalSettings } from "../lib/settings.js";
+
+await loadGlobalSettings().catch(() => undefined);
+await loadLanguage();
+applyTranslations();
 
 type Tenant = {
   name: string;
   adminUsername: string;
+  adminEmail?: string;
   memberCount: number;
   deletedAt?: string | null;
   createdAt: string;
@@ -43,7 +49,7 @@ async function loadTenants() {
     return `<tr class="border-b border-[#e0d6ce]">
       <td class="py-3 font-medium text-[#2c2420]">${tenant.name}</td>
       <td class="py-3 text-[#5a4e46]">${tenant.adminUsername}</td>
-      <td class="py-3 text-[#5a4e46]">—</td>
+      <td class="py-3 text-[#5a4e46]">${tenant.adminEmail ?? "—"}</td>
       <td class="py-3">${tenant.memberCount}</td>
       <td class="py-3 text-[#7a6e66]">${created}</td>
       <td class="py-3">${status}</td>
@@ -70,6 +76,5 @@ async function loadAuditLogs() {
   }).join("");
 }
 
-loadBranding().catch(() => undefined);
 loadTenants().catch((error) => showMessage(error instanceof Error ? error.message : "Failed to load tenants."));
 loadAuditLogs().catch((error) => showMessage(error instanceof Error ? error.message : "Failed to load audit logs."));

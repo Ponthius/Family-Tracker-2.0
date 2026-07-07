@@ -1,7 +1,9 @@
-// ─────────────────────────────────────────────
-//  Family Tracker — Members Page
-//  members.ts
-// ─────────────────────────────────────────────
+import { applyTranslations, loadLanguage } from "../lib/i18n.js";
+import { loadGlobalSettings } from "../lib/settings.js";
+
+await loadGlobalSettings().catch(() => undefined);
+await loadLanguage();
+applyTranslations();
 
 const API = "/api";
 
@@ -25,7 +27,7 @@ function showMessage(msg: string, kind: "success" | "error" = "success") {
 
 async function loadMembers() {
   try {
-    const res = await fetch(`${API}/family/members`);
+    const res = await fetch(`${API}/family/members`, { credentials: "include" });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error);
 
@@ -66,6 +68,7 @@ addMemberForm.addEventListener("submit", async (e) => {
   try {
     const res = await fetch(`${API}/family/members`, {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, email, password, role }),
     });
@@ -82,5 +85,3 @@ addMemberForm.addEventListener("submit", async (e) => {
 });
 
 loadMembers();
-loadBranding().catch(() => undefined);
-import { loadBranding } from "../lib/branding.js";

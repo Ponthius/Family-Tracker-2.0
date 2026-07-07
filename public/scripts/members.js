@@ -1,6 +1,171 @@
-function f(){let e=localStorage.getItem("familyBranding");if(!e)return null;try{return JSON.parse(e)}catch{return null}}async function i(){let e=f();if(!e)try{let t=await fetch("/api/auth/me",{credentials:"include"});if(t.ok){let n=await t.json();e=n.user?.family??null,e&&localStorage.setItem("familyBranding",JSON.stringify(e)),n.user?.language&&localStorage.setItem("language",n.user.language)}}catch{e=null}e&&(e.name&&document.querySelectorAll("[data-family-name]").forEach(t=>{t.textContent=e?.name??""}),e.accentColor&&document.documentElement.style.setProperty("--theme-color",e.accentColor))}var g="/api",m=document.getElementById("membersBody"),d=document.getElementById("messageBox"),p=document.getElementById("addMemberBtn"),r=document.getElementById("addModal"),b=document.getElementById("cancelAddBtn"),u=document.getElementById("addMemberForm");function c(e,t="success"){d.textContent=e,d.className=`rounded-lg border px-4 py-3 text-sm ${t==="success"?"bg-[#e7efe2] text-[#3c5a3c] border-[#b9cdb0]":"bg-[#fceeee] text-[#a13d3d] border-[#e3b5b5]"}`,d.classList.remove("hidden"),setTimeout(()=>d.classList.add("hidden"),5e3)}async function y(){try{let e=await fetch(`${g}/family/members`),t=await e.json();if(!e.ok)throw new Error(t.error);let n=t.members||[];if(n.length===0){m.innerHTML='<tr><td colspan="4" class="py-8 text-center text-[#9b8a7a]">No family members yet.</td></tr>';return}m.innerHTML=n.map(a=>{let o=a.emailVerified?'<span class="text-[#3c5a3c] text-xs">Verified</span>':'<span class="text-[#a13d3d] text-xs">Pending</span>';return`<tr class="border-b border-[#e0d6ce]">
-        <td class="py-3">${a.role==="Admin"?`<span class="bg-[#3d3530] text-[#f5f1ec] text-xs px-2 py-0.5 rounded">${a.role}</span>`:`<span class="bg-[#e8e0d8] text-[#5a4e46] text-xs px-2 py-0.5 rounded">${a.role}</span>`}</td>
-        <td class="py-3 text-[#2c2420]">${a.username||"\u2014"}</td>
-        <td class="py-3 text-[#5a4e46]">${a.email||"\u2014"}</td>
-        <td class="py-3">${o}</td>
-      </tr>`}).join("")}catch(e){c(e instanceof Error?e.message:"Failed to load members.","error")}}p.addEventListener("click",()=>r.classList.remove("hidden"));b.addEventListener("click",()=>r.classList.add("hidden"));r.addEventListener("click",e=>{e.target===r&&r.classList.add("hidden")});u.addEventListener("submit",async e=>{e.preventDefault();let t=document.getElementById("newUsername").value.trim(),n=document.getElementById("newEmail").value.trim(),a=document.getElementById("newPassword").value,o=document.getElementById("newRole").value;try{let s=await fetch(`${g}/family/members`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:t,email:n,password:a,role:o})}),l=await s.json();if(!s.ok)throw new Error(l.error);c(`Added ${l.member.username} as ${l.member.role}.`),r.classList.add("hidden"),u.reset(),await y()}catch(s){c(s instanceof Error?s.message:"Failed to add member.","error")}});y();i().catch(()=>{});
+// src/client/lib/i18n.ts
+var translations = {};
+async function loadLanguage() {
+  const lang = localStorage.getItem("lang") ?? localStorage.getItem("language") ?? "en";
+  const res = await fetch(`/locales/${lang}.json`);
+  translations = await res.json();
+  document.documentElement.lang = lang;
+}
+function resolveTemplate(text, vars) {
+  let result = text;
+  if (vars) {
+    for (const [k, v] of Object.entries(vars)) {
+      result = result.replaceAll(`{{${k}}}`, v);
+    }
+  }
+  return result;
+}
+function applyTranslations(root = document) {
+  root.querySelectorAll("[data-i18n]").forEach((node) => {
+    const key = node.getAttribute("data-i18n");
+    if (!key) return;
+    const value = translations[key];
+    if (value) node.textContent = resolveTemplate(value, node.dataset);
+  });
+  root.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
+    const key = node.getAttribute("data-i18n-placeholder");
+    if (!key) return;
+    const value = translations[key];
+    if (value) node.placeholder = resolveTemplate(value, node.dataset);
+  });
+  root.querySelectorAll("[data-i18n-title]").forEach((node) => {
+    const key = node.getAttribute("data-i18n-title");
+    if (!key) return;
+    const value = translations[key];
+    if (value) node.setAttribute("title", resolveTemplate(value, node.dataset));
+  });
+}
+
+// src/client/lib/settings.ts
+function readJson(value) {
+  if (!value) return null;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+}
+function getStoredLanguage() {
+  return localStorage.getItem("lang") ?? localStorage.getItem("language") ?? "en";
+}
+function setRootTheme(mode) {
+  document.documentElement.dataset["theme"] = mode;
+  document.body?.classList.toggle("dark-mode", mode === "dark");
+  localStorage.setItem("display_mode", mode);
+}
+function applyBranding(branding) {
+  if (!branding) return;
+  if (branding.name) {
+    document.querySelectorAll("[data-family-name]").forEach((node) => {
+      node.textContent = branding.name ?? node.textContent ?? "";
+    });
+  }
+  if (branding.accentColor) {
+    document.documentElement.style.setProperty("--theme-color", branding.accentColor);
+    localStorage.setItem("workspace_theme_color", branding.accentColor);
+  }
+  localStorage.setItem("familyBranding", JSON.stringify(branding));
+}
+function refreshTitle(brandName) {
+  if (!brandName) return;
+  document.title = document.title.replace(/Family Tracker|Super Admin|Members|Tasks|Schedules|Profile/gi, brandName);
+}
+async function loadGlobalSettings() {
+  const storedBranding = readJson(localStorage.getItem("familyBranding"));
+  const storedMode = localStorage.getItem("display_mode") ?? "light";
+  setRootTheme(storedMode);
+  applyBranding(storedBranding);
+  refreshTitle(storedBranding?.name);
+  const lang = getStoredLanguage();
+  document.documentElement.lang = lang;
+  if (storedBranding && storedBranding.name) {
+    document.title = document.title.replace(/Family Tracker|Super Admin|Members|Tasks|Schedules|Profile/gi, storedBranding.name);
+  }
+  try {
+    const res = await fetch("/api/auth/me", { credentials: "include" });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.user?.language) {
+      localStorage.setItem("lang", data.user.language);
+      localStorage.setItem("language", data.user.language);
+      document.documentElement.lang = data.user.language;
+    }
+    if (data.user?.family) {
+      applyBranding(data.user.family);
+      refreshTitle(data.user.family.name);
+    }
+  } catch {
+    return;
+  }
+}
+
+// src/client/scripts/members.ts
+await loadGlobalSettings().catch(() => void 0);
+await loadLanguage();
+applyTranslations();
+var API = "/api";
+var membersBody = document.getElementById("membersBody");
+var messageBox = document.getElementById("messageBox");
+var addMemberBtn = document.getElementById("addMemberBtn");
+var addModal = document.getElementById("addModal");
+var cancelAddBtn = document.getElementById("cancelAddBtn");
+var addMemberForm = document.getElementById("addMemberForm");
+function showMessage(msg, kind = "success") {
+  messageBox.textContent = msg;
+  messageBox.className = `rounded-lg border px-4 py-3 text-sm ${kind === "success" ? "bg-[#e7efe2] text-[#3c5a3c] border-[#b9cdb0]" : "bg-[#fceeee] text-[#a13d3d] border-[#e3b5b5]"}`;
+  messageBox.classList.remove("hidden");
+  setTimeout(() => messageBox.classList.add("hidden"), 5e3);
+}
+async function loadMembers() {
+  try {
+    const res = await fetch(`${API}/family/members`, { credentials: "include" });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    const members = data.members || [];
+    if (members.length === 0) {
+      membersBody.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-[#9b8a7a]">No family members yet.</td></tr>';
+      return;
+    }
+    membersBody.innerHTML = members.map((m) => {
+      const verified = m.emailVerified ? '<span class="text-[#3c5a3c] text-xs">Verified</span>' : '<span class="text-[#a13d3d] text-xs">Pending</span>';
+      const roleBadge = m.role === "Admin" ? `<span class="bg-[#3d3530] text-[#f5f1ec] text-xs px-2 py-0.5 rounded">${m.role}</span>` : `<span class="bg-[#e8e0d8] text-[#5a4e46] text-xs px-2 py-0.5 rounded">${m.role}</span>`;
+      return `<tr class="border-b border-[#e0d6ce]">
+        <td class="py-3">${roleBadge}</td>
+        <td class="py-3 text-[#2c2420]">${m.username || "\u2014"}</td>
+        <td class="py-3 text-[#5a4e46]">${m.email || "\u2014"}</td>
+        <td class="py-3">${verified}</td>
+      </tr>`;
+    }).join("");
+  } catch (err) {
+    showMessage(err instanceof Error ? err.message : "Failed to load members.", "error");
+  }
+}
+addMemberBtn.addEventListener("click", () => addModal.classList.remove("hidden"));
+cancelAddBtn.addEventListener("click", () => addModal.classList.add("hidden"));
+addModal.addEventListener("click", (e) => {
+  if (e.target === addModal) addModal.classList.add("hidden");
+});
+addMemberForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const username = document.getElementById("newUsername").value.trim();
+  const email = document.getElementById("newEmail").value.trim();
+  const password = document.getElementById("newPassword").value;
+  const role = document.getElementById("newRole").value;
+  try {
+    const res = await fetch(`${API}/family/members`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password, role })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    showMessage(`Added ${data.member.username} as ${data.member.role}.`);
+    addModal.classList.add("hidden");
+    addMemberForm.reset();
+    await loadMembers();
+  } catch (err) {
+    showMessage(err instanceof Error ? err.message : "Failed to add member.", "error");
+  }
+});
+loadMembers();

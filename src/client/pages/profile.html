@@ -18,11 +18,11 @@
           </a>
       </div>
       <nav class="sidebar__nav">
-        <a href="/pages/dashboard.html" data-page="dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
-        <a href="/pages/tasks.html" data-page="tasks"><i class="fas fa-calendar-alt"></i><span>Tasks</span></a>
-        <a href="/pages/members.html" data-page="members"><i class="fas fa-user-friends"></i><span>Members</span></a>
-        <a href="/pages/schedules.html" data-page="schedules"><i class="fas fa-clock"></i><span>Schedules</span></a>
-        <a href="/pages/profile.html" data-page="profile" class="is-active"><i class="fas fa-user-circle"></i><span>Profile</span></a>
+        <a href="/pages/dashboard.html" data-page="dashboard"><i class="fas fa-tachometer-alt"></i><span data-i18n="dashboard">Dashboard</span></a>
+        <a href="/pages/tasks.html" data-page="tasks"><i class="fas fa-calendar-alt"></i><span data-i18n="tasks">Tasks</span></a>
+        <a href="/pages/members.html" data-page="members"><i class="fas fa-user-friends"></i><span data-i18n="members">Members</span></a>
+        <a href="/pages/schedules.html" data-page="schedules"><i class="fas fa-clock"></i><span data-i18n="schedules">Schedules</span></a>
+        <a href="/pages/profile.html" data-page="profile" class="is-active"><i class="fas fa-user-circle"></i><span data-i18n="profile">Profile</span></a>
       </nav>
     </aside>
 
@@ -33,34 +33,34 @@
             <i class="fas fa-arrow-left"></i>
           </button>
           <div>
-            <p class="profile-eyebrow">Account Settings</p>
-            <h1>Profile</h1>
+            <p class="profile-eyebrow" data-i18n="account_settings">Account Settings</p>
+            <h1 data-i18n="profile">Profile</h1>
           </div>
           <button class="profile-theme" id="themeToggle" type="button" title="Toggle system mode">
             <i class="fas fa-moon"></i>
           </button>
         </header>
-        <button id="logoutBtn" class="danger-btn" type="button" style="margin-bottom:12px;">Log Out</button>
+        <button id="logoutBtn" class="danger-btn" type="button" style="margin-bottom:12px;" data-i18n="logout">Log Out</button>
 
         <div id="successMsg" class="status status--success" hidden></div>
         <div id="errorMsg" class="status status--error" hidden></div>
 
         <section class="profile-section">
-          <h2>Personal Information</h2>
+          <h2 data-i18n="personal_information">Personal Information</h2>
           <div class="field">
-            <label for="username">Username</label>
+            <label for="username" data-i18n="username">Username</label>
             <input id="username" type="text" placeholder="e.g. poel_admin">
           </div>
           <div class="field">
-            <label for="fullName">Full name</label>
+            <label for="fullName" data-i18n="name">Full name</label>
             <input id="fullName" type="text" placeholder="e.g. Ponthius Poel">
           </div>
           <div class="field">
-            <label for="email">Email address</label>
+            <label for="email" data-i18n="email">Email address</label>
             <input id="email" type="email" readonly>
           </div>
           <div class="field">
-            <label for="language">Interface language</label>
+            <label for="language" data-i18n="language">Interface language</label>
             <select id="language">
               <option value="en">English</option>
               <option value="fr">French</option>
@@ -72,25 +72,25 @@
         </section>
 
         <section class="profile-section">
-          <h2>Security & Credentials</h2>
+          <h2 data-i18n="security_credentials">Security & Credentials</h2>
           <div class="field">
-            <label for="currentPassword">Current password</label>
+            <label for="currentPassword" data-i18n="current_password">Current password</label>
             <input id="currentPassword" type="password" placeholder="Enter current password">
           </div>
           <div class="field">
-            <label for="newPassword">New password</label>
+            <label for="newPassword" data-i18n="new_password">New password</label>
             <input id="newPassword" type="password" placeholder="Minimum 8 characters">
           </div>
           <div class="field">
-            <label for="confirmPassword">Confirm new password</label>
+            <label for="confirmPassword" data-i18n="confirm_new_password">Confirm new password</label>
             <input id="confirmPassword" type="password" placeholder="Re-enter your password">
           </div>
         </section>
 
         <section class="profile-section">
-          <h2>Workspace Branding</h2>
+          <h2 data-i18n="workspace_branding">Workspace Branding</h2>
           <div class="field">
-            <label for="familyName">Family name</label>
+            <label for="familyName" data-i18n="family_name">Family name</label>
             <input id="familyName" type="text" placeholder="e.g. Smith Family">
           </div>
 
@@ -102,11 +102,11 @@
           </div>
 
           <div class="field">
-            <label for="logoUrl">Logo URL</label>
+            <label for="logoUrl" data-i18n="logo_url">Logo URL</label>
             <input id="logoUrl" type="url" placeholder="https://example.com/logo.png">
           </div>
           <div class="field">
-            <label for="accentColor">Accent color</label>
+            <label for="accentColor" data-i18n="accent_color">Accent color</label>
             <div class="color-row">
               <input id="accentColor" type="color" value="#8b7355">
               <span id="colorCode">#8B7355</span>
@@ -115,12 +115,12 @@
         </section>
 
         <section class="profile-section profile-section--danger">
-          <h2>Danger Zone</h2>
-          <p>This suspends your account immediately and removes it after the grace period.</p>
-          <button id="deleteAccountBtn" class="danger-btn" type="button">Delete Account</button>
+          <h2 data-i18n="danger_zone">Danger Zone</h2>
+          <p data-i18n="danger_zone_warning">This suspends your account immediately and removes it after the grace period.</p>
+          <button id="deleteAccountBtn" class="danger-btn" type="button" data-i18n="delete_account">Delete Account</button>
         </section>
 
-        <button id="saveBtn" class="save-btn" type="button">Save Settings</button>
+        <button id="saveBtn" class="save-btn" type="button" data-i18n="save_settings">Save Settings</button>
       </section>
     </main>
   </div>
