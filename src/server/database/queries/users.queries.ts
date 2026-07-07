@@ -24,7 +24,14 @@ export function findUserById(id: string) {
 
 export function findActiveUserById(id: string) {
   return prisma.user.findFirst({
-    where: { id, deletedAt: null, family: { deletedAt: null } },
+    where: {
+      id,
+      deletedAt: null,
+      OR: [
+        { family: null },
+        { family: { deletedAt: null } },
+      ],
+    },
     include: { family: true },
   });
 }
