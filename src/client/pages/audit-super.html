@@ -17,6 +17,25 @@
       <p class="text-[0.9rem] text-[#7a6e66] mt-1" data-i18n="audit_super_title">System Audit — Super Admin</p>
     </div>
 
+    <!-- Message box -->
+    <div id="messageBox" class="hidden rounded-lg border px-4 py-3 text-sm mb-4"></div>
+
+    <!-- Stats cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="bg-[#f5f1ec] rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-5">
+        <p class="text-[#7a6e66] text-xs uppercase tracking-wide" data-i18n="total_families">Total Families</p>
+        <p id="totalFamilies" class="text-3xl font-bold text-[#2c2420] font-serif mt-1">—</p>
+      </div>
+      <div class="bg-[#f5f1ec] rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-5">
+        <p class="text-[#7a6e66] text-xs uppercase tracking-wide" data-i18n="total_members">Total Members</p>
+        <p id="totalMembers" class="text-3xl font-bold text-[#2c2420] font-serif mt-1">—</p>
+      </div>
+      <div class="bg-[#f5f1ec] rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-5">
+        <p class="text-[#7a6e66] text-xs uppercase tracking-wide" data-i18n="active">Active</p>
+        <p id="activeFamilies" class="text-3xl font-bold text-[#2c2420] font-serif mt-1">—</p>
+      </div>
+    </div>
+
     <!-- Family Accounts Overview Panel -->
     <div class="bg-[#f5f1ec] rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-6 flex flex-col gap-4">
       <div class="flex flex-wrap items-center justify-between gap-3">
@@ -139,197 +158,5 @@
 
   </div>
   <script type="module" src="/scripts/audit-super.js"></script>
-  <script>
-  "use strict";
-  document.addEventListener("DOMContentLoaded", () => {
-    const ROWS_PER_PAGE = 8;
-    let currentPage = 1;
-    let totalRecords = 0;
-
-    const familyTableBody = document.getElementById("familyTableBody");
-    const auditTableBody  = document.getElementById("auditTableBody");
-    const noFamilies      = document.getElementById("noFamilies");
-    const noAudit         = document.getElementById("noAudit");
-    const auditPanelTitle = document.getElementById("auditPanelTitle");
-    const pagination      = document.getElementById("pagination");
-    const familySearch    = document.getElementById("familySearch");
-    const filterSearch    = document.getElementById("filterSearch");
-    const filterFamily    = document.getElementById("filterFamily");
-    const filterRole      = document.getElementById("filterRole");
-    const filterAction    = document.getElementById("filterAction");
-    const filterStatus    = document.getElementById("filterStatus");
-    const filterDateFrom  = document.getElementById("filterDateFrom");
-    const filterDateTo    = document.getElementById("filterDateTo");
-    const clearFilterBtn  = document.getElementById("clearFilterBtn");
-
-    const show = (el) => el.classList.remove("hidden");
-    const hide = (el) => el.classList.add("hidden");
-
-    function formatDate(str) {
-      if (!str) return "";
-      return new Date(str).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-    }
-    function capitalize(str) {
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    }
-
-    async function fetchFamilyOverview(search = "") {
-      const params = new URLSearchParams();
-      if (search) params.set("search", search);
-      const res = await fetch(`/api/audit/families-overview?${params}`);
-      if (!res.ok) throw new Error("Failed to load family overview.");
-      const { data } = await res.json();
-      return data;
-    }
-
-    async function fetchAuditLogs() {
-      const params = new URLSearchParams({
-        page    : String(currentPage),
-        limit   : String(ROWS_PER_PAGE),
-        search  : filterSearch.value.trim(),
-        family  : filterFamily.value,
-        role    : filterRole.value,
-        action  : filterAction.value,
-        status  : filterStatus.value,
-        dateFrom: filterDateFrom.value,
-        dateTo  : filterDateTo.value,
-      });
-      const res = await fetch(`/api/audit/all?${params}`);
-      if (!res.ok) throw new Error("Failed to load audit logs.");
-      return await res.json();
-    }
-
-    function renderFamilyTable(list) {
-      familyTableBody.innerHTML = "";
-      if (!list || list.length === 0) { show(noFamilies); return; }
-      hide(noFamilies);
-      list.forEach(f => {
-        const isActive = f.status === "active";
-        const badgeClass = isActive
-          ? "bg-[#dff0d8] text-[#3c5a3c]"
-          : "bg-[#fef3cd] text-[#7a5a10]";
-        const tr = document.createElement("tr");
-        tr.className = "hover:bg-[#f0ebe3] transition-colors";
-        tr.innerHTML = `
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8]">${f.family_name}</td>
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8]">${f.admin_username}</td>
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8]">${f.member_count}</td>
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8]">
-            <span class="inline-block px-[9px] py-[2px] rounded-full text-[0.75rem] font-semibold ${badgeClass}">${capitalize(f.status)}</span>
-          </td>
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8] whitespace-nowrap">${formatDate(f.date_created)}</td>
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8] whitespace-nowrap">${formatDate(f.last_activity) || "—"}</td>
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8]">
-            <button class="text-[#5a4038] text-[0.84rem] underline cursor-pointer bg-none border-none hover:text-[#2c2420]"
-                    data-family="${f.family_name}">View Logs</button>
-          </td>
-        `;
-        familyTableBody.appendChild(tr);
-      });
-      familyTableBody.querySelectorAll("button[data-family]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const fam = btn.getAttribute("data-family");
-          filterFamily.value = fam;
-          auditPanelTitle.textContent = `Audit Logs — ${fam}`;
-          currentPage = 1;
-          loadAuditLogs();
-          document.getElementById("auditPanelTitle").scrollIntoView({ behavior: "smooth" });
-        });
-      });
-    }
-
-    function renderAuditTable(data, total) {
-      auditTableBody.innerHTML = "";
-      if (!data || data.length === 0) { show(noAudit); renderPagination(0); return; }
-      hide(noAudit);
-      data.forEach(log => {
-        const isSuccess = log.status === "Success";
-        const badgeClass = isSuccess ? "bg-[#dff0d8] text-[#3c5a3c]" : "bg-[#f0dede] text-[#7a2020]";
-        const tr = document.createElement("tr");
-        tr.className = "hover:bg-[#f0ebe3] transition-colors";
-        tr.innerHTML = `
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8]">${log.username}</td>
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8]">
-            <span class="inline-block px-[9px] py-[2px] rounded-full text-[0.75rem] bg-[#ece1d2] text-[#5a4038] capitalize">${log.role.replace(/_/g, " ")}</span>
-          </td>
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8]">${log.family || "—"}</td>
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8]">${log.action}</td>
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8] whitespace-nowrap">${formatDate(log.date)}</td>
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8] whitespace-nowrap">${log.time}</td>
-          <td class="px-3 py-[10px] border-b border-[#ddd4c8]">
-            <span class="inline-block px-[9px] py-[2px] rounded-full text-[0.75rem] font-semibold ${badgeClass}">${log.status}</span>
-          </td>
-        `;
-        auditTableBody.appendChild(tr);
-      });
-      renderPagination(total);
-    }
-
-    function renderPagination(total) {
-      pagination.innerHTML = "";
-      const totalPages = Math.ceil(total / ROWS_PER_PAGE);
-      if (totalPages <= 1) return;
-      for (let i = 1; i <= totalPages; i++) {
-        const btn = document.createElement("button");
-        const isActive = i === currentPage;
-        btn.className = `px-3 py-[6px] rounded-md border text-[0.82rem] cursor-pointer transition-colors
-          ${isActive ? "bg-[#3d3530] text-[#f5f1ec] border-[#3d3530]" : "bg-[#faf8f5] text-[#5a4e46] border-[#c8bfb5] hover:bg-[#ece6dd]"}`;
-        btn.textContent = String(i);
-        btn.addEventListener("click", () => { currentPage = i; loadAuditLogs(); });
-        pagination.appendChild(btn);
-      }
-    }
-
-    async function loadFamilyOverview(search = "") {
-      try {
-        const data = await fetchFamilyOverview(search);
-        filterFamily.innerHTML = '<option value="" data-i18n="all_families">All Families</option>';
-        data.forEach(f => {
-          const opt = document.createElement("option");
-          opt.value = f.family_name;
-          opt.textContent = f.family_name;
-          filterFamily.appendChild(opt);
-        });
-        renderFamilyTable(data);
-      } catch (err) {
-        console.error("[FamilyOverview]", err.message);
-        familyTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-[#7a6e66] py-4">Failed to load family accounts.</td></tr>`;
-      }
-    }
-
-    async function loadAuditLogs() {
-      auditTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-[#7a6e66] py-4">Loading...</td></tr>`;
-      hide(noAudit);
-      try {
-        const { data, total } = await fetchAuditLogs();
-        totalRecords = total;
-        renderAuditTable(data, total);
-        const noFilter = !filterFamily.value && !filterRole.value && !filterAction.value &&
-          !filterStatus.value && !filterDateFrom.value && !filterDateTo.value && !filterSearch.value.trim();
-        if (noFilter) auditPanelTitle.textContent = "All Audit Logs";
-      } catch (err) {
-        console.error("[AuditLogs]", err.message);
-        auditTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-[#7a6e66] py-4">Failed to load audit logs.</td></tr>`;
-      }
-    }
-
-    familySearch.addEventListener("input", () => loadFamilyOverview(familySearch.value.trim()));
-
-    [filterSearch, filterFamily, filterRole, filterAction, filterStatus, filterDateFrom, filterDateTo]
-      .forEach(el => el.addEventListener("input", () => { currentPage = 1; loadAuditLogs(); }));
-
-    clearFilterBtn.addEventListener("click", () => {
-      filterSearch.value = filterFamily.value = filterRole.value =
-      filterAction.value = filterStatus.value = filterDateFrom.value = filterDateTo.value = "";
-      auditPanelTitle.textContent = "All Audit Logs";
-      currentPage = 1;
-      loadAuditLogs();
-    });
-
-    loadFamilyOverview();
-    loadAuditLogs();
-  });
-  </script>
-
 </body>
 </html>
