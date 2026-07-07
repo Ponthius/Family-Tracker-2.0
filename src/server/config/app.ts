@@ -24,8 +24,8 @@ app.use(express.static(path.join(__dirname, "../../../public")));
 // All API routes live under /api
 app.use("/api", router);
 
-// Redirect the root URL to the login page
-app.get("/", (_req, res) => res.redirect("/pages/login.html"));
+// Redirect the root URL to the landing page
+app.get("/", (_req, res) => res.redirect("/pages/landing-page.html"));
 
 // Global error handler — must be registered last, after all routes
 app.use(errorHandler);
